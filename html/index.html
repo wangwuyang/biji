@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>html相关</title>
+    <meta name="Keywords" content="王午阳,网站"> <!--关键词-->
+    <meta name="Description" content="王午阳的网站">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+</head>
+<body>
+<h3>本地存储</h3>
+<pre>
+    //赋值:
+    localStorage.setItem("YongHuMing","admin");
+    //或者
+    localStorage.YongHuMing = "admin"
+    //删除
+    localStorage.removeItem("YongHuMing");
+    localStorage.b = JSON.stringify(a);
+    //只能存储字符串，所以利用来JSON转换对象数组之类的
+
+    //遍历并输出localStorage里的数据
+    for(var BenDi=0; BenDi < localStorage.length;BenDi++){
+        console.log('localStorage里存储的第'+BenDi+'条数据的名字为：'+localStorage.key(BenDi)+',值为：'+localStorage.getItem(localStorage.key(BenDi)));
+    }
+</pre>
+<h3>meta标签相关</h3>
+
+<div class="NR_ZhengWen_NR1">
+    <p>
+        <strong><...meta http-equiv="Content-Type" content="text/html; charset=UTF-8"...></strong><br />
+        <span>设置宽度为设备的宽度，默认不缩放，不允许用户缩放（即禁止缩放），在网页加载时隐藏地址栏与导航栏（ios7.1新增）</span>
+    </p>
+    <p>
+        <strong><... meta content="True" name="HandheldFriendly"...></strong><br />
+        <span></span>
+    </p>
+    <p>
+        <strong><...meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"...></strong><br />
+        <span>是否启动webapp功能，会删除默认的苹果工具栏和菜单栏</span>
+    </p>
+    <p>
+        <strong><.. meta name="apple-mobile-web-app-capable" content="yes">...></strong><br />
+        <span>当启动webapp功能时，显示手机信号、时间、电池的顶部导航栏的颜色。默认值为default（白色），可以定为black（黑色）和black-translucent（灰色半透明）</span>
+    </p>
+    <p>
+        <strong><...meta name="apple-mobile-web-app-status-bar-style" content="black"...></strong><br />
+        <span>忽略页面中的电话号码数字和邮件链接</span>
+    </p>
+    <p>
+        <strong><...meta name="format-detection" content="telephone=no, email=no"...></strong><br />
+        <span>启用360浏览器的极速模式(webkit)</span>
+    </p>
+    <p>
+        <strong><...meta name="renderer" content="webkit"...></strong><br />
+        <span>避免IE使用兼容模式</span>
+    </p>
+    <p>
+        <strong><...meta http-equiv="X-UA-Compatible" content="IE=edge"...></strong><br />
+        <span>针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓</span>
+    </p>
+    <p>
+        <strong><...meta name="HandheldFriendly" content="true"...></strong><br />
+        <span>微软的老式浏览器</span>
+    </p>
+    <p>
+        <strong><...meta name="MobileOptimized" content="320"...></strong><br />
+        <span>uc强制竖屏</span>
+    </p>
+    <p>
+        <strong><...meta name="screen-orientation" content="portrait"...></strong><br />
+        <span>QQ强制竖屏</span>
+    </p>
+    <p>
+        <strong><...meta name="x5-orientation" content="portrait"...></strong><br />
+        <span>windows phone 点击无高光</span>
+    </p>
+    <p>
+        <strong><...meta name="msapplication-tap-highlight" content="no"...></strong><br />
+        <span></span>
+    </p>
+    <p>
+        <\ntv\>标签——便捷导航栏
+    </p>
+    <pre>
+        <meta name="renderer" content="webkit"><!--优先使用chrome内核渲染页面-->
+    <meta http-equiv="x-ua-compatible" content="ie=edge"><!--在桌面开发的时候可以让IE浏览器以最新的模式渲染页面-->
+    <meta name="renderer" content="webkit"><!--设置 360 浏览器渲染模式：webkit 为极速内核，ie-comp 为 IE 兼容内核，ie-stand 为 IE 标准内核。-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--如果安装了 Google Chrome Frame，则使用 GCF 来渲染页面，如果没有安装 GCF，则使用最高版本的 IE 内核进行渲染。-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <title>王午阳的网站首页</title><!--对SEO极其重要 谷歌上最多70个字符-->
+        <!-- 允许控制资源的过度加载 -->
+        <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'">--><!-- 尽早地放置在文档中 --><!-- 仅应用于该标签下的内容 -->
+    <meta name="application-name" content="王午阳的网站">  <!-- Web 应用的名称（仅当网站被用作为一个应用时才使用）-->
+        <!--all:文件将被检索，且链接可以被查询；none:与all相反； index:文件可以被检索，noindex:反之；follow:页面上的链接可以被查询；nofollow:反之；-->
+    <meta name="robots" content="index,follow"><!--告诉搜索引擎不要获取网页，并阻止其进入链接（可提升SEO） robots：所有搜索引擎-->
+    <meta name="google" content="notranslate"><!--禁止谷歌浏览器弹出是否翻译语言的弹窗-->
+        <!--<meta http-equiv="refresh" content="10;URL='http://wangwuyang.cn'">--><!--30s后跳到其他页面（不要后面的参数则是刷新效果）-->
+    <meta content="telephone=no" name="format-detection" /><!-- 忽略数字自动识别为电话号码 -->
+    <meta content="email=no" name="format-detection" /><!-- 忽略识别邮箱 -->
+    <meta name="HandheldFriendly" content="true"><!--貌似是针对不认识viewport的设备(苹果都成街机了，谁闲的没事用塞班看网页？)(，比如黑莓)-->
+    <meta name="MobileOptimized" content="320">   <!-- 微软的老式浏览器 -->
+    <meta name="screen-orientation" content="portrait">  <!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"> <!-- QQ强制竖屏 -->
+    <meta name="full-screen" content="yes">    <!-- UC强制全屏 -->
+    <meta name="x5-fullscreen" content="true">    <!-- QQ强制全屏 -->
+    <meta name="browsermode" content="application"><!-- UC应用模式 -->
+    <meta name="x5-page-mode" content="app"><!-- QQ应用模式 -->
+    <meta name="msapplication-tap-highlight" content="no"><!-- windows phone 点击无高光 -->
+        <!--通过手机百毒打开网页时，百毒可能会对你的网页进行转码，只展现页面内容，头底部会被替换并且一般会加点广告==尿性不改-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <!--苹果的设备可以说单成一家，有很多特定的设置，有兴趣的小伙伴可以到官方文档说明查看详细 https://developer.apple.com/develop/-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /> <!--有个apple，这是苹果设备专用的，是否启用 WebApp 全屏模式；-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> <!-- 隐藏状态栏/设置状态栏颜色：：只有在开启WebApp全屏模式时才生效。content的值为default | black | black-translucent 。 -->
+    <meta name="apple-mobile-web-app-title" content="王午阳的网站">   <!-- 添加到主屏后的标题 -->
+    <meta name="Keywords" content="王午阳的个人网站"> <!--告诉浏览器网页内容，不过现在已经没用了-->
+    <meta name="description" content="王午阳,笔记,个人网站,前端笔记,总页面"><!--会被用在搜索引擎的结果页（可略微提升SEO）-->
+    <meta name="author" content="王午阳,770799669"> <!--作者-->
+    <link rel="icon" type="image/ico" href="public/img/lian1.jpg" /><!--网页ico图标设置-->
+        <!--<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />--><!--rss订阅-->
+        <!--<meta name="google" content="nositelinkssearchbox">-->    <!-- 告诉 Google 不显示网站链接的搜索框 -->
+        <!--<meta name="google-site-verification" content="verification_token">-->   <!-- 验证 Google 搜索控制台的所有权 -->
+        <!--<meta name="generator" content="program">-->     <!-- 用来命名软件或用于构建网页（如 - WordPress、Dreamweaver）-->
+        <!--<meta name="rating" content="General">-->    <!-- 基于网站内容给出一般的年龄分级 -->
+        <!--<meta name="referrer" content="never"> -->   <!-- 允许控制 referrer 信息如何传递 -->
+        <!-- <meta http-equiv="x-dns-prefetch-control" content="off"> -->  <!-- 通过设置为 “off” 完全退出 DNS 预取 -->
+        <!-- <meta http-equiv="set-cookie" content="name=value; expires=date; path=url"> --><!-- 在客户端存储 cookie，web 浏览器的客户端识别 -->
+    <meta name="subject" content="学习笔记">    <!-- 关于你的网站主题的简短描述 -->
+        <!--<meta name="abstract" content="《论儒法对当今的影响》">-->    <!-- 非常简短（少于 10 个字）的描述。主要用于学术论文。-->
+    </pre>
+</div>
+</body>
+</html>

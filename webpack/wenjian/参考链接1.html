@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)http://www.cnblogs.com/wonyun/p/6030090.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>html-webpack-plugin详解 - wonyun - 博客园</title>
+<meta property="og:description" content="引言 最近在react项目中初次用到了 &#39; &#39; 插件，用到该插件的两个主要作用： 为html文件中引入的外部资源如 、`link`动态添加每次compile后的hash，防止引用缓存的外部文件问题 可">
+    <link type="text/css" rel="stylesheet" href="./参考链接1_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./参考链接1_files/bundle-Minyx2_Lite.css">
+<link type="text/css" rel="stylesheet" href="./参考链接1_files/259976.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./参考链接1_files/bundle-Minyx2_Lite-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/wonyun/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/wonyun/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/wonyun/wlwmanifest.xml">
+    <script src="./参考链接1_files/osd.js.下载"></script><script src="./参考链接1_files/pubads_impl_rendering_2019032901.js.下载"></script><script async="" src="./参考链接1_files/analytics.js.下载"></script><script src="./参考链接1_files/jquery-2.2.0.min.js.下载"></script>
+    <script>var currentBlogId=259976;var currentBlogApp='wonyun',cb_enable_mathjax=true;var isLogined=false;</script>
+    <script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processClass: 'math', processEscapes: true },
+        TeX: { 
+            equationNumbers: { autoNumber: ['AMS'], useLabelIds: true }, 
+            extensions: ['extpfeil.js'],
+            Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': { linebreaks: { automatic: true } },
+        SVG: { linebreaks: { automatic: true } }
+        });
+    </script><script src="./参考链接1_files/MathJax.js.下载"></script>
+<script src="./参考链接1_files/blog-common.js.下载" type="text/javascript"></script>
+<script src="./参考链接1_files/bundle-Minyx2_Lite.js.下载" language="javascript" type="text/javascript"></script>
+<link rel="preload" href="./参考链接1_files/f.txt" as="script"><script type="text/javascript" src="./参考链接1_files/f.txt"></script><script src="./参考链接1_files/pubads_impl_2019032901.js.下载" async=""></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><link rel="prefetch" href="http://tpc.googlesyndication.com/safeframe/1-0-32/html/container.html"></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<a name="top"></a>
+
+
+
+<div id="container">
+    <a class="minyx" href="http://www.cnblogs.com/">代码改变世界</a>
+    <ul id="topMnu">
+        <!-- 统计数据 -->
+        <li>
+            
+                <div id="blog_stats">
+Posts - 38, 
+Articles - 1, 
+Comments - 86
+<!----></div>
+            
+        </li>
+        <!-- 这边可以增加一些链接 -->
+        <!-- 博客园 -->
+        <li><a href="http://www.cnblogs.com/">Cnblogs</a></li>
+        <!-- 管理 -->
+        <li id="topMnu-dashboard">
+            <a id="lnkDashboard" href="https://www.cnblogs.com/wonyun/admin/EditPosts.aspx">Dashboard</a></li>
+        <li>
+            <a id="lnkLogin" href="http://passport.cnblogs.com/login.aspx?ReturnUrl=http://www.cnblogs.com/wonyun/p/6030090.html">Login</a></li>
+    </ul>
+
+    <script type="text/javascript">
+        var m = window.__blog.topMenuRendered;
+        if (m) { m(__$("topMnu")); }
+    </script>
+
+    <div id="header">
+        <ul id="menu">
+            <!-- 首页，当前section加上current类 -->
+            <li id="menu-home" class="current">
+                <a id="lnkHome" href="https://www.cnblogs.com/wonyun/">Home</a></li>
+            <!-- 联系 -->
+            <li id="menu-contact">
+                <a id="lnkContact" href="http://space.cnblogs.com/msg/send/wonyun">Contact</a></li>
+            <!-- 相册 -->
+            <li id="menu-gallary">
+                <a id="lnkGallery" href="https://www.cnblogs.com/wonyun/gallery.html">Gallery</a></li>
+            <!-- Rss订阅 -->
+            <li id="rss">
+                <a id="lnkRss" href="https://www.cnblogs.com/wonyun/rss">RSS</a></li>
+        </ul>
+        <div id="newmsg"></div>
+        <h1>
+            <!-- 主标题 -->
+            <a id="lnkBlogTitle" href="https://www.cnblogs.com/wonyun/">wonyun</a>
+            <!-- 子标题 -->
+            <small>
+                关注前端，关注web</small>
+        </h1>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.headerRendered;
+        if (m) { m(__$("header")); }
+    </script>
+
+    <div id="wrapper">
+        <div id="content">
+            <script type="text/javascript">
+                var m = window.__blog.preRenderPosts;
+                if (m) { m(); }
+            </script>
+            
+        <div id="post_detail">
+<div class="post" id="post">
+    <a name="top"></a>
+    <h2><a id="cb_post_title_url" href="https://www.cnblogs.com/wonyun/p/6030090.html">html-webpack-plugin详解</a></h2>
+    <small>2016-11-06 22:10 by wonyun, <span id="post_view_count">93312</span> 阅读, <span id="post_comment_count">7</span> 评论, <a href="http://www.cnblogs.com/wonyun/p/6030090.html#" onclick="AddToWz(6030090);return false;">收藏</a>,  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=6030090" rel="nofollow">编辑</a></small>
+    <div class="entry">
+        <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown"><h2 id="引言">引言</h2>
+<p>最近在react项目中初次用到了<a href="https://github.com/ampedandwired/html-webpack-plugin"><code>html-webapck-plugin</code></a>插件，用到该插件的两个主要作用：</p>
+<ul>
+<li><p>为html文件中引入的外部资源如<code>script</code>、<code>link</code>动态添加每次compile后的hash，防止引用缓存的外部文件问题</p></li>
+<li><p>可以生成创建html入口文件，比如单页面可以生成一个html文件入口，配置<strong>N</strong>个<code>html-webpack-plugin</code>可以生成<strong>N</strong>个页面入口</p></li>
+</ul>
+<p>有了这种插件，那么在项目中遇到类似上面的问题都可以轻松的解决。</p>
+<p>在本人项目中使用<code>html-webpack-plugin</code>，由于对该插件不太熟悉，开发过程中遇到这样或者那样的问题，下面就来说说这个插件。</p>
+<h2 id="html-webpack-plugin">html-webpack-plugin</h2>
+<p>插件的基本作用就是生成html文件。原理很简单：</p>
+<pre><code class="hljs markdown">将 webpack中<span class="hljs-code">`entry`</span>配置的相关入口chunk  和  <span class="hljs-code">`extract-text-webpack-plugin`</span>抽取的css样式   插入到该插件提供的<span class="hljs-code">`template`</span>或者<span class="hljs-code">`templateContent`</span>配置项指定的内容基础上生成一个html文件，具体插入方式是将样式<span class="hljs-code">`link`</span>插入到<span class="hljs-code">`head`</span>元素中，<span class="hljs-code">`script`</span>插入到<span class="hljs-code">`head`</span>或者<span class="hljs-code">`body`</span>中。</code></pre>
+<p>实例化该插件时可以不配置任何参数，例如下面这样：</p>
+<pre class="javascript"><code class="hljs"><span class="hljs-keyword">var</span> HtmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'html-webpack-plugin'</span>)
+    
+webpackconfig = {
+    ...
+    plugins: [
+        <span class="hljs-keyword">new</span> HtmlWebpackPlugin()
+    ]
+}</code></pre>
+<p>不配置任何选项的<code>html-webpack-plugin</code>插件，他会默认将webpack中的<code>entry</code>配置所有入口thunk和<code>extract-text-webpack-plugin</code>抽取的css样式都插入到文件指定的位置。例如上面生成的html文件内容如下：</p>
+<pre class="html"><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Webpack App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"index-af150e90583a89775c77.css"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"common-26a14e7d42a7c7bbc4c2.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index-af150e90583a89775c77.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+<p>当然可以使用具体的配置项来定制化一些特殊的需求，那么插件有哪些配置项呢？</p>
+<h2 id="html-webpack-plugin配置项">html-webpack-plugin配置项</h2>
+<p>插件提供的配置项比较多，通过源码可以看出具体的配置项如下：</p>
+<pre class="javascript"><code class="hljs"><span class="hljs-keyword">this</span>.options = _.extend({
+    <span class="hljs-attr">template</span>: path.join(__dirname, <span class="hljs-string">'default_index.ejs'</span>),
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">'index.html'</span>,
+    <span class="hljs-attr">hash</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">inject</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">compile</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">favicon</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">minify</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">cache</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">showErrors</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">chunks</span>: <span class="hljs-string">'all'</span>,
+    <span class="hljs-attr">excludeChunks</span>: [],
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'Webpack App'</span>,
+    <span class="hljs-attr">xhtml</span>: <span class="hljs-literal">false</span>
+  }, options);</code></pre>
+<ul>
+<li><strong><code>title</code></strong>: 生成的html文档的标题。配置该项，它并不会替换指定模板文件中的title元素的内容，除非html模板文件中使用了模板引擎语法来获取该配置项值，如下ejs模板语法形式：</li>
+</ul>
+<pre class="html"><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>{%= o.htmlWebpackPlugin.options.title %}<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></code></pre>
+<ul>
+<li><p><strong><code>filename</code></strong>：输出文件的文件名称，默认为<strong>index.html</strong>，不配置就是该文件名；此外，还可以为输出文件指定目录位置（例如'html/index.html'）</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">**关于filename补充两点：**</span></code></pre>
+<blockquote>
+<p>1、filename配置的html文件目录是相对于webpackConfig.output.path路径而言的，不是相对于当前项目目录结构的。<br>
+2、指定生成的html文件内容中的<code>link</code>和<code>script</code>路径是相对于生成目录下的，写路径的时候请写生成目录下的相对路径。</p>
+</blockquote></li>
+<li><p><strong><code>template</code></strong>: 本地模板文件的位置，支持加载器(如handlebars、ejs、undersore、html等)，如比如 <code>handlebars!src/index.hbs</code>；</p>
+<pre><code class="hljs markdown"><span class="hljs-strong">**关于template补充几点：**</span></code></pre>
+<blockquote>
+<p>1、template配置项在html文件使用<code>file-loader</code>时，其所指定的位置找不到，导致生成的html文件内容不是期望的内容。<br>
+2、为template指定的模板文件没有指定<strong>任何loader的话</strong>，默认使用<code>ejs-loader</code>。如<code>template: './index.html'</code>，若没有为<code>.html</code>指定任何loader就使用<code>ejs-loader</code></p>
+</blockquote></li>
+<li><p><strong>templateContent</strong>: string|function，可以指定模板的内容，<strong>不能与template共存</strong>。配置值为function时，可以直接返回html字符串，也可以异步调用返回html字符串。</p></li>
+<li><p><strong><code>inject</code></strong>：向<em>template</em>或者<em>templateContent</em>中注入所有静态资源，不同的配置值注入的位置不经相同。</p>
+<blockquote>
+<p>1、<strong>true或者body</strong>：所有<strong>JavaScript</strong>资源插入到body元素的底部<br>
+2、<strong>head</strong>: 所有<strong>JavaScript</strong>资源插入到head元素中<br>
+3、<strong>false</strong>： 所有静态资源css和JavaScript都不会注入到模板文件中</p>
+</blockquote></li>
+<li><p><strong><code>favicon</code></strong>: 添加特定favicon路径到输出的html文档中，这个同<code>title</code>配置项，需要在模板中动态获取其路径值</p></li>
+<li><p><strong><code>hash</code></strong>：true|false，是否为所有注入的静态资源添加webpack每次编译产生的唯一hash值，添加hash形式如下所示：<br>
+<code>html       &lt;script type="text/javascript" src="common.js?a3e1396b501cdd9041be"&gt;&lt;/script&gt;</code></p></li>
+<li><p><strong><code>chunks</code></strong>：允许插入到模板中的一些chunk，不配置此项默认会将<code>entry</code>中所有的thunk注入到模板中。在配置多个页面时，每个页面注入的thunk应该是不相同的，需要通过该配置为不同页面注入不同的thunk；</p></li>
+<li><p><strong><code>excludeChunks</code></strong>: 这个与<code>chunks</code>配置项正好相反，用来配置不允许注入的thunk。</p></li>
+<li><p><strong><code>chunksSortMode</code></strong>: none | auto| function，默认auto； 允许指定的thunk在插入到html文档前进行排序。<br>
+&gt;<strong>function</strong>值可以指定具体排序规则；<strong>auto</strong>基于thunk的id进行排序； <strong>none</strong>就是不排序</p></li>
+<li><p><strong><code>xhtml</code></strong>: true|fasle, 默认false；是否渲染<code>link</code>为自闭合的标签，true则为自闭合标签</p></li>
+<li><p><strong><code>cache</code></strong>: true|fasle, 默认true； 如果为true表示在对应的thunk文件修改后就会emit文件</p></li>
+<li><p><strong><code>showErrors</code></strong>: true|false，默认true；是否将错误信息输出到html页面中。这个很有用，在生成html文件的过程中有错误信息，输出到页面就能看到错误相关信息便于调试。</p></li>
+<li><p><strong><code>minify</code></strong>: {....}|false；传递 html-minifier 选项给 minify 输出，false就是不使用html压缩，minify具体配置参数请点击<a href="https://github.com/kangax/html-minifier#options-quick-reference">html-minifier</a></p></li>
+</ul>
+<p>下面的是一个用于配置这些属性的一个例子：</p>
+<pre class="javascript"><code class="hljs">    <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+          <span class="hljs-attr">title</span>:<span class="hljs-string">'rd平台'</span>,
+          <span class="hljs-attr">template</span>: <span class="hljs-string">'entries/index.html'</span>, <span class="hljs-comment">// 源模板文件</span>
+          filename: <span class="hljs-string">'./index.html'</span>, <span class="hljs-comment">// 输出文件【注意：这里的根路径是module.exports.output.path】</span>
+          showErrors: <span class="hljs-literal">true</span>,
+          <span class="hljs-attr">inject</span>: <span class="hljs-string">'body'</span>,
+          <span class="hljs-attr">chunks</span>: [<span class="hljs-string">"common"</span>,<span class="hljs-string">'index'</span>]
+      })</code></pre>
+<h2 id="配置多个html页面">配置多个html页面</h2>
+<p><code>html-webpack-plugin</code>的一个实例生成一个html文件，如果单页应用中需要多个页面入口，或者多页应用时配置多个html时，那么就需要实例化该插件多次；</p>
+<p>即有几个页面就需要在webpack的plugins数组中配置几个该插件实例：</p>
+<pre class="javascript"><code class="hljs">    ...
+    plugins: [
+        <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+             <span class="hljs-attr">template</span>: <span class="hljs-string">'src/html/index.html'</span>,
+              <span class="hljs-attr">excludeChunks</span>: [<span class="hljs-string">'list'</span>, <span class="hljs-string">'detail'</span>]
+        }),
+        <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+            <span class="hljs-attr">filename</span>: <span class="hljs-string">'list.html'</span>,
+            <span class="hljs-attr">template</span>: <span class="hljs-string">'src/html/list.html'</span>,
+            <span class="hljs-attr">thunks</span>: [<span class="hljs-string">'common'</span>, <span class="hljs-string">'list'</span>]
+        }), 
+        <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+          <span class="hljs-attr">filename</span>: <span class="hljs-string">'detail.html'</span>,
+          <span class="hljs-attr">template</span>: <span class="hljs-string">'src/html/detail.html'</span>,
+           <span class="hljs-attr">thunks</span>: [<span class="hljs-string">'common'</span>, <span class="hljs-string">'detail'</span>]
+        })
+    ]
+    ...</code></pre>
+<p>如上例应用中配置了三个入口页面：index.html、list.html、detail.html；并且每个页面注入的thunk不尽相同；类似如果多页面应用，就需要为每个页面配置一个；</p>
+<h2 id="配置自定义的模板">配置自定义的模板</h2>
+<p>不带参数的<code>html-webpack-plugin</code>默认生成的html文件只是将thunk和css样式插入到文档中，可能不能满足我们的需求；</p>
+<p>另外，如上面所述，三个页面指定了三个不同html模板文件；在项目中，可能所有页面的模板文件可以共用一个，因为<code>html-webpack-plugin</code>插件支持不同的模板loader，所以结合模板引擎来共用一个模板文件有了可能。</p>
+<p>所以，配置自定义模板就派上用场了。具体的做法，借助于模板引擎来实现，例如插件没有配置loader时默认支持的ejs模板引擎，下面就以ejs模板引擎为例来说明；</p>
+<p>例如项目中有2个入口html页面，它们可以共用一个模板文件，利用ejs模板的语法来动态插入各自页面的thunk和css样式，代码可以这样：</p>
+<pre class="html"><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"font-size:20px"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">%=</span> <span class="hljs-attr">htmlWebpackPlugin.options.title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">%</span> <span class="hljs-attr">for</span> (<span class="hljs-attr">var</span> <span class="hljs-attr">css</span> <span class="hljs-attr">in</span> <span class="hljs-attr">htmlWebpackPlugin.files.css</span>) { %&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"&lt;%=htmlWebpackPlugin.files.css[css] %&gt;"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">%</span> } %&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">%</span> <span class="hljs-attr">for</span> (<span class="hljs-attr">var</span> <span class="hljs-attr">chunk</span> <span class="hljs-attr">in</span> <span class="hljs-attr">htmlWebpackPlugin.files.chunks</span>) { %&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"&lt;%=htmlWebpackPlugin.files.chunks[chunk].entry %&gt;"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">%</span> } %&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+<p>你可能会对代码中的上下文<code>htmlWebpackPlugin</code>数据感到迷惑，这是啥东东？其实这是<code>html-webpack-plugin</code>插件在生成html文件过程中产生的数据，这些数据对html模板文件是可用的。</p>
+<h2 id="自定义模板上下文数据">自定义模板上下文数据</h2>
+<p><code>html-webpack-plugin</code>在生成html文件的过程中，插件会根据配置生成一个对当前模板可用的特定数据，模板语法可以根据这些数据来动态生成html文件的内容。</p>
+<p>那么，插件生成的特殊数据格式是什么，生成的哪些数据呢？从源码或者其官网都给出了答案。从源码中可以看出模板引擎具体可以访问的数据如下:</p>
+<pre class="javascript"><code class="hljs"><span class="hljs-keyword">var</span> templateParams = {
+        <span class="hljs-attr">compilation</span>: compilation,
+        <span class="hljs-attr">webpack</span>: compilation.getStats().toJson(),
+        <span class="hljs-attr">webpackConfig</span>: compilation.options,
+        <span class="hljs-attr">htmlWebpackPlugin</span>: 
+          files: assets,
+          <span class="hljs-attr">options</span>: self.options
+        }
+      };</code></pre>
+<p>从中可以看出，有四个主要的对像数据。其中<code>compilation</code>为所有webpack插件提供的都可以访问的一个编译对象，此处就不太做介绍，具体可以自己查资料。下面就对剩下的三个对象数据进行说明。</p>
+<h3 id="webpack">webpack</h3>
+<p><code>webpack的stats对象</code>；注意一点：</p>
+<blockquote>
+<p>这个可以访问的<code>stats</code>对象是htm文件生成时所对应的<code>stats</code>对象，而不是webpack运行完成后所对应的整个<code>stats</code>对象。</p>
+</blockquote>
+<h3 id="webpackconfig">webpackConfig</h3>
+<p><code>webpack的配置项</code>；通过这个属性可以获取webpack的相关配置项，如通过<code>webpackConfig.output.publicPath</code>来获取<code>publicPath</code>配置。当然还可以获取其他配置内容。</p>
+<h3 id="htmlwebpackplugin">htmlWebpackPlugin</h3>
+<p><code>html-webpack-plugin</code>插件对应的数据。它包括两部分：</p>
+<ul>
+<li><code>htmlWebpackPlugin.files</code>: 此次html-webpack-plugin插件配置的chunk和抽取的css样式。该files值其实是webpack的stats对象的<code>assetsByChunkName</code>属性代表的值，该值是插件配置的chunk块对应的按照<code>webpackConfig.output.filename</code>映射的值。例如对应上面配置插件各个属性配置项例子中生成的数据格式如下：</li>
+</ul>
+<pre class="javascript"><code class="hljs"><span class="hljs-string">"htmlWebpackPlugin"</span>: {
+  <span class="hljs-string">"files"</span>: {
+    <span class="hljs-string">"css"</span>: [ <span class="hljs-string">"inex.css"</span> ],
+    <span class="hljs-string">"js"</span>: [ <span class="hljs-string">"common.js"</span>, <span class="hljs-string">"index.js"</span>],
+    <span class="hljs-string">"chunks"</span>: {
+      <span class="hljs-string">"common"</span>: {
+        <span class="hljs-string">"entry"</span>: <span class="hljs-string">"common.js"</span>,
+        <span class="hljs-string">"css"</span>: [ <span class="hljs-string">"index.css"</span> ]
+      },
+      <span class="hljs-string">"index"</span>: {
+        <span class="hljs-string">"entry"</span>: <span class="hljs-string">"index.js"</span>,
+        <span class="hljs-string">"css"</span>: [<span class="hljs-string">"index.css"</span>]
+      }
+    }
+  }
+}</code></pre>
+<p>这样，就可以是用如下模板引擎来动态输出script脚本</p>
+<pre class="javascript"><code class="hljs">&lt;% <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> chunk <span class="hljs-keyword">in</span> htmlWebpackPlugin.files.chunks) { %&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"&lt;%=htmlWebpackPlugin.files.chunks[chunk].entry %&gt;"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+&lt;% } %&gt;</code></pre>
+<ul>
+<li><code>htmlWebpackPlugin.options</code>: 传递给插件的配置项，具体的配置项如上面插件配置项小节所描述的。</li>
+</ul>
+<h2 id="插件事件">插件事件</h2>
+<p>不知道你发现没有，html-webpack-plugin插件在插入静态资源时存在一些问题：</p>
+<ul>
+<li><strong>在插入js资源只能插入head或者body元素中，不能一些插入head中，另一些插入body中</strong></li>
+<li><strong>不支持在html中文件内联</strong>*，例如在文件的某个地方用<code>&lt;script src="xxx.js?__inline"&gt;&lt;/script&gt;</code>来内联外部脚本</li>
+</ul>
+<p>为此，有人专门给插件作者提问了<a href="https://github.com/ampedandwired/html-webpack-plugin/issues/157">这个问题</a>；对此插件作者提供了插件事件，允许<strong>其他插件</strong>来改变html文件内容。具体的事件如下：</p>
+<p>Async（异步事件）:</p>
+<pre><code class="hljs verilog">    * html-webpack-plugin-<span class="hljs-keyword">before</span>-html-generation
+    * html-webpack-plugin-<span class="hljs-keyword">before</span>-html-processing
+    * html-webpack-plugin-alter-asset-tags
+    * html-webpack-plugin-after-html-processing
+    * html-webpack-plugin-after-emit</code></pre>
+<p>Sync（同步事件）:</p>
+<pre><code class="hljs">    * html-webpack-plugin-alter-chunks</code></pre>
+<p>这些事件是提供给其他插件使用的，用于改变html的内容。因此，要用这些事件需要提供一个webpack插件。例如下面定义的<code>MyPlugin</code>插件。</p>
+<pre class="javascript"><code class="hljs">
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyPlugin</span>(<span class="hljs-params">options</span>) </span>{
+  <span class="hljs-comment">// Configure your plugin with options...</span>
+}
+
+MyPlugin.prototype.apply = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">compiler</span>) </span>{
+  <span class="hljs-comment">// ...</span>
+  compiler.plugin(<span class="hljs-string">'compilation'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">compilation</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'The compiler is starting a new compilation...'</span>);
+
+    compilation.plugin(<span class="hljs-string">'html-webpack-plugin-before-html-processing'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">htmlPluginData, callback</span>) </span>{
+      htmlPluginData.html += <span class="hljs-string">'The magic footer'</span>;
+      callback(<span class="hljs-literal">null</span>, htmlPluginData);
+    });
+  });
+
+};
+
+<span class="hljs-built_in">module</span>.exports = MyPlugin;</code></pre>
+<p>然后，在<code>webpack.config.js</code>文件中配置<code>Myplugin</code>信息：</p>
+<pre class="javascript"><code class="hljs">plugins: [
+  <span class="hljs-keyword">new</span> MyPlugin({<span class="hljs-attr">options</span>: <span class="hljs-string">''</span>})
+]</code></pre>
+<p>由于本人知识有限，文章有什么不对的，还请斧正~~~</p>
+</div><div id="MySignature"></div>
+        <div class="clear"></div>
+        <div id="blog_post_info_block">
+        <div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(6030090,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;86d670d1-d29c-e111-aa3f-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./参考链接1_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./参考链接1_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/wonyun/" target="_blank"><img src="./参考链接1_files/20151223233553.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/wonyun/">wonyun</a><br>
+            <a href="http://home.cnblogs.com/u/wonyun/followees">关注 - 9</a><br>
+            <a href="http://home.cnblogs.com/u/wonyun/followers">粉丝 - 94</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;86d670d1-d29c-e111-aa3f-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(6030090,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">11</span>
+    </div>
+    <div class="buryit" onclick="votePost(6030090,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+        <div class="clear"></div>
+        <div id="post_next_prev"><a href="https://www.cnblogs.com/wonyun/p/5950722.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/wonyun/p/5950722.html" title="发布于2016-11-03 23:49">file-loader引起的html-webpack-plugin坑</a><br><a href="https://www.cnblogs.com/wonyun/p/6094783.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/wonyun/p/6094783.html" title="发布于2016-12-20 19:55">webapp开发之需要知道的css细节</a><br></div>
+    </div>
+</div>
+    <ul class="postmetadata">
+        <li class="icon_cat" id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/wonyun/category/904391.html" target="_blank">webpack</a></li>
+        <li class="icon_bullet" id="EntryTag"></li>
+    </ul>
+</div>
+<script src="./参考链接1_files/highlight.min.js.下载"></script><script>markdown_highlight();</script><script type="text/javascript">var allowComments=true,cb_blogId=259976,cb_entryId=6030090,cb_blogApp=currentBlogApp,cb_blogUserGuid='86d670d1-d29c-e111-aa3f-842b2b196315',cb_entryCreatedDate='2016/11/6 22:10:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=true;</script>
+<script type="text/javascript">
+    var m = window.__blog.postRendered;
+    if (m) { m(__$("post")); }
+</script>
+<script type="text/javascript">
+    var m = window.__blog.postRenderPosts;
+    if (m) { m(); }
+</script>
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<a class="addcomment" href="http://www.cnblogs.com/wonyun/p/6030090.html#comment_tip">Add your comment</a>
+<h3 id="comments"></h3>
+<div class="feedbackNoItems"></div>
+<script language="javascript" type="text/javascript">
+    var m = window.__blog.preRenderCommentList;
+    if (m) { m(); }
+</script>
+
+<ol class="commentlist" id="commentList">	
+
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#3677899" class="layer">#1楼</a><a name="3677899" id="comment_anchor_3677899"></a></cite> <a id="a_comment_author_3677899" href="https://www.cnblogs.com/liuxianan/" target="_blank">我是小茗同学</a> <a href="http://msg.cnblogs.com/send/%E6%88%91%E6%98%AF%E5%B0%8F%E8%8C%97%E5%90%8C%E5%AD%A6" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2017-04-26 18:19</span></small>
+			</h5>
+			<div id="comment_body_3677899" class="blog_comment_body">不错，赞一个</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3677899,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3677899,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3677899_avatar" style="display:none;">http://pic.cnblogs.com/face/352797/20160108090502.png</span>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#3879054" class="layer">#2楼</a><a name="3879054" id="comment_anchor_3879054"></a></cite> <a id="a_comment_author_3879054" href="https://www.cnblogs.com/brucelee/" target="_blank">雪峰</a> <a href="http://msg.cnblogs.com/send/%E9%9B%AA%E5%B3%B0" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2018-01-02 09:15</span></small>
+			</h5>
+			<div id="comment_body_3879054" class="blog_comment_body">赞</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3879054,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3879054,&#39;Bury&#39;,this)">反对(0)</a></div>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#3905462" class="layer">#3楼</a><a name="3905462" id="comment_anchor_3905462"></a></cite> <a id="a_comment_author_3905462" href="https://www.cnblogs.com/jiangxiaoxu/" target="_blank">僵小徐</a> <a href="http://msg.cnblogs.com/send/%E5%83%B5%E5%B0%8F%E5%BE%90" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2018-02-07 14:01</span></small>
+			</h5>
+			<div id="comment_body_3905462" class="blog_comment_body">赞</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3905462,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3905462,&#39;Bury&#39;,this)">反对(0)</a></div>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#3910356" class="layer">#4楼</a><a name="3910356" id="comment_anchor_3910356"></a></cite> <a id="a_comment_author_3910356" href="https://www.cnblogs.com/zero-zhong/" target="_blank">青争如月兔</a> <a href="http://msg.cnblogs.com/send/%E9%9D%92%E4%BA%89%E5%A6%82%E6%9C%88%E5%85%94" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2018-02-24 18:22</span></small>
+			</h5>
+			<div id="comment_body_3910356" class="blog_comment_body">其实有点搞不懂，有些html引用会这么写：“&lt;script src="{%= o.htmlWebpackPlugin.files.chunks.venders.entry %}"&gt;&lt;/script&gt;”。可是.htmlWebpackPlugin都没有配置files，想问下这路径到底是怎么取到的？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3910356,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3910356,&#39;Bury&#39;,this)">反对(2)</a></div><span id="comment_3910356_avatar" style="display:none;">http://pic.cnblogs.com/face/1238105/20180208153106.png</span>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#4070193" class="layer">#5楼</a><a name="4070193" id="comment_anchor_4070193"></a></cite> <a id="a_comment_author_4070193" href="https://www.cnblogs.com/jiangxiaoxu/" target="_blank">僵小徐</a> <a href="http://msg.cnblogs.com/send/%E5%83%B5%E5%B0%8F%E5%BE%90" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2018-09-18 15:55</span></small>
+			</h5>
+			<div id="comment_body_4070193" class="blog_comment_body">楼主是不是写错了，是不是应该是chunk不是thunk吧</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4070193,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4070193,&#39;Bury&#39;,this)">反对(0)</a></div>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#4076835" class="layer">#6楼</a><a name="4076835" id="comment_anchor_4076835"></a></cite> <a id="a_comment_author_4076835" href="http://home.cnblogs.com/u/1421050/" target="_blank">骑士道七准则</a> <a href="http://msg.cnblogs.com/send/%E9%AA%91%E5%A3%AB%E9%81%93%E4%B8%83%E5%87%86%E5%88%99" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2018-09-26 14:02</span></small>
+			</h5>
+			<div id="comment_body_4076835" class="blog_comment_body">我还想想知道模板ejs文件里要怎么写</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4076835,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4076835,&#39;Bury&#39;,this)">反对(0)</a></div>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+		<li class="alt">
+			<h5>
+				<cite><a href="http://www.cnblogs.com/wonyun/p/6030090.html#4140394" class="layer">#7楼</a><a name="4140394" id="comment_anchor_4140394"></a><span id="comment-maxId" style="display:none;">4140394</span><span id="comment-maxDate" style="display:none;">2018/12/17 9:35:24</span></cite> <a id="a_comment_author_4140394" href="https://www.cnblogs.com/cocowool/" target="_blank">Cocowool</a> <a href="http://msg.cnblogs.com/send/Cocowool" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><small> <span class="comment_date">2018-12-17 09:35</span></small>
+			</h5>
+			<div id="comment_body_4140394" class="blog_comment_body">写得很好，让我对html-webpack-plugin有了比较全面的认识，但是模板这块还是没理解。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4140394,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4140394,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_4140394_avatar" style="display:none;">http://pic.cnblogs.com/face/u39469.jpg</span>
+			<div class="opt_comment"><span class="comment_actions"></span></div>
+		</li>
+	
+</ol>
+
+<script language="javascript" type="text/javascript">
+    var m = window.__blog.commentListRendered;
+    if (m) { m(__$("commentList")); }
+</script><div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="http://www.cnblogs.com/wonyun/p/6030090.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/wonyun/p/6030090.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-工控&#39;)">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="https://cloud.baidu.com/campaign/purchase-2019/index.html?track=cp:dsp|pf:pc|pp:chui-bokeyuan-huodong-19caigouji-BCC-neiyeCH-190410|pu:neiyeCH-wenzilian|ci:2019cgj|kw:2112847" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-百度云&#39;)">【推荐】百度智能云品牌升级，云服务器福利低至0.5折</a><br><a href="https://gitee.com/enterprises?from=bky-2" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-gitee&#39;)">【推荐】专业便捷的企业级代码托管服务 - Gitee 码云</a><br><a href="https://www.bagevent.com/event/2468856" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-GAITC&#39;)">【活动】2019第四届全球人工技术大会解码“智能+时代”</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="./参考链接1_files/gpt.js.下载"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CIiPpNq1xeECFUIvlgodZxkKTg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./参考链接1_files/saved_resource.html"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/grimm/p/5770829.html" target="_blank" onclick="clickRecomItmem(5770829)">webpack 插件： html-webpack-plugin</a><br>·  <a href="https://www.cnblogs.com/xiaokebb/p/9533455.html" target="_blank" onclick="clickRecomItmem(9533455)">webpack之html-webpack-plugin的使用</a><br>·  <a href="https://www.cnblogs.com/negivup/p/9564096.html" target="_blank" onclick="clickRecomItmem(9564096)">HTML处理——html-webpack-plugin</a><br>·  <a href="https://www.cnblogs.com/h2zZhou/p/7839465.html" target="_blank" onclick="clickRecomItmem(7839465)">webpack入门（六）——html-webpack-plugin</a><br>·  <a href="https://www.cnblogs.com/pqjwyn/p/7691878.html" target="_blank" onclick="clickRecomItmem(7691878)">如何开发webpack plugin</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CImPpNq1xeECFUIvlgodZxkKTg"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" data-google-container-id="2" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./参考链接1_files/saved_resource(1).html"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/623607/" target="_blank">小米手机预装的安全应用被发现存在安全隐患</a><br> ·  <a href="https://news.cnblogs.com/n/623606/" target="_blank">金山云、小米金融、新网银行达成战略合作 共建金融科技新生态</a><br> ·  <a href="https://news.cnblogs.com/n/623603/" target="_blank">英国淘汰纸质火车票 代之以手机智能车票</a><br> ·  <a href="https://news.cnblogs.com/n/623602/" target="_blank">特斯拉加快部署第三代Autopilot自动驾驶计算机</a><br> ·  <a href="https://news.cnblogs.com/n/623600/" target="_blank">台积电一季度营收71亿美元 下滑12%</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.contentRendered;
+            if (m) { m(__$("content")); }
+        </script>
+
+        <div id="sidebar">
+            
+<div id="about">
+<div>
+<h2 id="about_title">About</h2>
+<div id="about_body">
+<div id="blog-news"><div class="add-default">
+  <div style="float: left; margin-right: 5px; width: 190px">
+  
+<img width="190" height="270" src="./参考链接1_files/561794-20180322222243947-251092926.jpg">
+</div>
+<div class="about_generator">
+<label>所  在 地</label>：北京-西二旗<br>
+<label>姓      名</label>：wonyun<br>
+<label>所在职位</label>：前端攻城师<br>
+<label>兴趣爱好</label>：web前端.<br>
+<label>人生格言</label>：路漫漫其修远兮 吾将上下而求索~~<br>
+<label>写文章宗旨</label>：记录日常工作中出现的问题并对其原因进行分析总结，依次分享给大家，一同进步<br>
+<label>近期目标</label>：webpack细致分析，小程序以及nodejs学习<br>
+</div>
+</div><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/wonyun/">wonyun</a><br>园龄：<a href="https://home.cnblogs.com/u/wonyun/" title="入园时间：2012-05-13">6年10个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/wonyun/followers/">94</a><br>关注：<a href="https://home.cnblogs.com/u/wonyun/followees/">9</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;86d670d1-d29c-e111-aa3f-842b2b196315&#39;)">+加关注</a></div><script>getFollowStatus('86d670d1-d29c-e111-aa3f-842b2b196315')</script></div></div>
+<script type="text/javascript">loadBlogNews();</script>
+</div>
+</div>
+</div>
+
+            <script type="text/javascript">
+                var m = window.__blog.aboutRendered;
+                if (m) { m(__$("about")); }
+            </script>
+            
+<div id="mySearchWrapper">
+    <div id="mySearch">
+        <input type="image" src="./参考链接1_files/btnsearch.gif" id="btnZzk" class="submit" onclick="zzk_go();return false;">
+        <label class="lb_search"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="keyword"></label>
+    </div>
+</div>
+
+            <script type="text/javascript">
+                var m = window.__blog.searchFormRendered;
+                if (m) { m(__$("searchform")); }
+            </script>
+            <div id="sideMain">
+            </div>
+            <div id="sideRight">
+            <div id="side-archives">
+        <h2>随笔档案</h2>
+        <ul class="date">
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2019/02.html">2019年2月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2018/12.html">2018年12月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2018/10.html">2018年10月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2018/09.html">2018年9月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2018/07.html">2018年7月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2018/06.html">2018年6月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2018/05.html">2018年5月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/12.html">2017年12月(5)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/07.html">2017年7月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/06.html">2017年6月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/05.html">2017年5月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/04.html">2017年4月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/03.html">2017年3月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/02.html">2017年2月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2017/01.html">2017年1月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/12.html">2016年12月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/11.html">2016年11月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/10.html">2016年10月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/09.html">2016年9月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/08.html">2016年8月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/07.html">2016年7月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/06.html">2016年6月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/05.html">2016年5月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/04.html">2016年4月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/03.html">2016年3月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/02.html">2016年2月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2016/01.html">2016年1月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/wonyun/archive/2015/12.html">2015年12月(1)</a></li>
+        </ul>
+    </div></div>
+            <div id="sideLeft">
+            <div id="side-calendar">
+        <h2>日历</h2>
+        <div id="blog-calendar"><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/03/01&#39;);return false;">&lt;</a></td><td align="center">2019年4月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2019/05/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td class="CalWeekendDay" align="center">6</td></tr><tr><td class="CalWeekendDay" align="center">7</td><td align="center">8</td><td align="center">9</td><td class="CalTodayDay" align="center">10</td><td align="center">11</td><td align="center">12</td><td class="CalWeekendDay" align="center">13</td></tr><tr><td class="CalWeekendDay" align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td class="CalWeekendDay" align="center">20</td></tr><tr><td class="CalWeekendDay" align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td class="CalWeekendDay" align="center">27</td></tr><tr><td class="CalWeekendDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr><tr><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td><td class="CalOtherMonthDay" align="center">11</td></tr>
+</tbody></table></div>
+    </div><div id="side-categories">
+        <h2>随笔分类</h2>
+        <ul class="folder">
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/873188.html">html/css(3)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/833356.html">HTTP(2)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/770518.html">javascript(8)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/770093.html">MVVM(1)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/890430.html">React(7)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/904391.html">webpack(5)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/817503.html">工具(3)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/1033121.html">其他(5)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/wonyun/category/940224.html">前端工程化(5)</a>
+                </li>
+        </ul>
+    </div><div id="side-top-posts-custom">
+    <h2>推荐排行榜</h2>
+    <div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/wonyun/p/5930333.html">1. React创建组件的三种方式及其区别(35)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/6030090.html">2. html-webpack-plugin详解(11)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/6804952.html">3. 从性能角度看react组件拆分的重要性(10)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/5524617.html">4. http协商缓存VS强缓存(7)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/7077296.html">5. 搭建带热更新功能的本地开发node server(5)</a></li></ul></div>
+</div><div id="side-top-posts">
+    <h2>阅读排行榜</h2>
+    <div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/wonyun/p/5930333.html">1. React创建组件的三种方式及其区别(109868)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/6030090.html">2. html-webpack-plugin详解(93309)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/5284163.html">3. window.open新打开窗口与新开标签页(54387)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/7966967.html">4. 谈谈form-data请求格式(40275)</a></li><li><a href="https://www.cnblogs.com/wonyun/p/5481134.html">5. react-native项目之样式总结(30307)</a></li></ul></div>
+</div>    
+
+
+    
+    
+
+
+</div>
+            
+                <div id="sideContainer"></div>
+                <script type="text/javascript">
+                    $.ajax({
+                        url: '/' + currentBlogApp + '/mvc/blog/Minyx2_Lite_SideColumn.aspx',
+                        data: '{}',
+                        type: 'post',
+                        dataType: 'text',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $("#sideContainer").html(data);
+                                loadBlogDefaultCalendar();
+                                loadBlogSideBlocks();
+                                var m = window.__blog.sideContainerRendered;
+                                if (m) { m(__$("sideContainer")); }
+                                window.__blog.sidebar.__layout();
+                            }
+                        }
+                    });
+
+                </script>
+            
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.sidebarRendered;
+            if (m) { m(__$("sidebar")); }
+        </script>
+
+        <div id="footer">
+            
+<p id="logoFoot">
+    <a href="http://www.spiga.com.mx/" title="Agencia Interactiva Spiga">www.spiga.com.mx</a>
+</p>
+<div class="footText">
+<p>
+Copyright ©2019 wonyun
+</p>
+<p>
+<a href="http://www.cnblogs.com/">博客园</a>
+</p>
+</div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.wrapperRendered;
+        if (m) { m(__$("wrapper")); }
+    </script>
+
+</div>
+<script type="text/javascript">
+    var m = window.__blog.containerRendered;
+    if (m) { m(__$("container")); }
+</script>
+
+
+
+<iframe id="google_osd_static_frame_2596176994623" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./参考链接1_files/saved_resource(2).html"></iframe></body></html>

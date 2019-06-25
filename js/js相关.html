@@ -1,0 +1,121 @@
+
+
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div class="NR_ZhengWen_NR1">
+    <ul>
+        <li><strong>网页可见区域宽：</strong><span>document.body.clientWidth;</span>
+        <li><strong>网页可见区域高：</strong><span>document.body.clientHeight;</span>
+        <li><strong>网页可见区域宽：</strong><span>document.body.offsetWidth (包括边线和滚动条的宽);</span>
+        <li><strong>网页可见区域高：</strong><span>document.body.offsetHeight (包括边线的宽);</span>
+        <li><strong>网页正文全文宽：</strong><span>document.body.scrollWidth;</span>
+        <li><strong>网页正文全文高：</strong><span>document.body.scrollHeight;</span>
+        <li><strong>网页被卷去的高(ff)：</strong><span>document.body.scrollTop;</span>
+        <li><strong>网页被卷去的高(ie)：</strong><span>document.documentElement.scrollTop;</span>
+        <li><strong>网页被卷去的左：</strong><span>document.body.scrollLeft;</span>
+        <li><strong>网页正文部分上：</strong><span>window.screenTop;</span>
+        <li><strong>网页正文部分左：</strong><span>window.screenLeft;</span>
+        <li><strong>某个元素的宽度：</strong><span>obj.offsetWidth;</span>
+        <li><strong>某个元素的高度：</strong><span>obj.offsetHeight;</span>
+        <li><strong>某个元素的上边界到body最顶部的距离：</strong><span>obj.offsetTop;（在元素的包含元素不含滚动条的情况下）</span>
+        <li><strong>某个元素的左边界到body最左边的距离：</strong><span>obj.offsetLeft;（在元素的包含元素不含滚动条的情况下）</span>
+        <li><strong>返回当前元素的上边界到它的包含元素的上边界的偏移量：</strong><span>obj.offsetTop（在元素的包含元素含滚动条的情况下）</span>
+        <li><strong>返回当前元素的左边界到它的包含元素的左边界的偏移量：</strong><span>obj.offsetLeft（在元素的包含元素含滚动条的情况下）</span>
+
+        <li><strong>scrollTop, scrollLeft</strong><span>
+    设置或返回已经滚动到元素的左边界或上边界的像素数。
+    只有在元素有滚动条的时候，例如，元素的 CSS overflow属性设置为 auto 的时候，这些像素才有用。
+    这些属性也只在文档的 <\body>或 <\html> 标记上定义（这和浏览器有关），并且一起来制定滚动文档的位置。
+    注意，这些属性并不会指定一个 <\iframe> 标记的滚动量。这是非标准的但却得到很好支持的属性
+    </span>
+            <p>
+                var head = document.head || document.getElementsByTagName('head')[0];  获取head元素，前者不支持IE8及以下;
+
+
+            </p>
+    </ul>
+    <table>
+        <tr>
+            <caption>判断手机端还是移动端</caption>
+            <td>
+                《script》
+                if(navigator.platform.indexOf('Win32')!=-1){}
+                else{}
+                《/script》
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <table>
+        <caption>js获取css属性的几种方法</caption>
+        <tr>
+            <td>1. obj.style：这个方法只能JS只能获取写在html标签中的写在style属性中的值（style=”…”），而无法获取定义在style type="text/css">里面的属性。</td>
+            <td>window.getComputedStyle</td>
+            <td>d</td>
+        </tr>
+        <tr>
+            <td><strong>History 对象</strong></td>
+            <td>
+                History 对象包含用户（在浏览器窗口中）访问过的 URL。<br />
+                History 对象是 window 对象的一部分，可通过 window.history 属性对其进行访问。
+            </td>
+            <td><strong> history.pushState(state, title, url)</strong></td>
+            <td>
+                将当前URL和history.state加入到history中，并用新的state和URL替换当前。不会造成页面刷新。<br />
+                state：与要跳转到的URL对应的状态信息。<br />
+                title：不知道干啥用，传空字符串就行了。<br />
+                url：要跳转到的URL地址，不能跨域。
+
+            </td>
+            <td>
+                history对象包含用户（在浏览器中）访问的URL。可以通过window.history访问。
+                1.history属性
+                length：返回浏览器中历史列表中的URL的数量。
+                2.history方法
+                （1）back()方法：加载history列表中的前一个URL.
+                （2）forward()：加载history列表中的后一个URL.
+                （3）go(n):加载history列表中的某个具体页面。n>0向后跳转，n<0向前跳转。go(1)==forward(),go(-1)==back().
+            </td>
+            <td>
+                addEventListener() 方法用于向指定元素添加事件句柄。
+                提示： 使用 removeEventListener() 方法来移除 addEventListener() 方法添加的事件句柄。
+            </td>
+
+        </tr>
+    </table>
+    <table>
+        <caption>时间日期相关</caption>
+        <tr>
+            <td>
+                var ShiJian = new Date();<br />
+                ShiJian.getYear(); //获取当前年份(2位)<br />
+                ShiJian.getFullYear(); //获取完整的年份(4位,1970-????)<br />
+                ShiJian.getMonth(); //获取当前月份(0-11,0代表1月)         // 所以获取当前月份是ShiJian.getMonth()+1;<br />
+                ShiJian.getDate(); //获取当前日(1-31)<br />
+                ShiJian.getDay(); //获取当前星期X(0-6,0代表星期天)<br />
+                ShiJian.getTime(); //获取当前时间(从1970.1.1开始的毫秒数)<br />
+                ShiJian.getHours(); //获取当前小时数(0-23)<br />
+                ShiJian.getMinutes(); //获取当前分钟数(0-59)<br />
+                ShiJian.getSeconds(); //获取当前秒数(0-59)<br />
+                ShiJian.getMilliseconds(); //获取当前毫秒数(0-999)<br />
+                ShiJian.toLocaleDateString(); //获取当前日期<br />
+                var mytime=ShiJian.toLocaleTimeString(); //获取当前时间<br />
+                ShiJian.toLocaleString( ); //获取日期与时间<br />
+            </td>
+        </tr>
+    </table>
+    <div><h4>手势触屏</h4>
+        aaa.addEventListener('touchstart',function(e){
+        var ev = e||event;
+        console.log(ev.touches[0].clientX);
+        alert("a");
+        });
+    </div>
+</div>
+</body>
+</html>

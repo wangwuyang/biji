@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>未命名</title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content=""> <!--关键词-->
+    <meta name="Description" content="">  <!--内容描述-->
+    <meta name="author" content=""> <!--作者-->
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="Fu">
+
+    </div>
+
+    <script>
+        Ajax("POST","../index.php",true,"这个是发送的内容",ChuLi1);
+
+        //ajax函数 参数说明：FangShi：发送方式是get还是post；url：后端文件路径； ture_or_false：异步还是同步;NeiRong:请求发送的内容(get填写null)
+        function Ajax(get_or_post,url,ture_or_false,NeiRong,HunDiaoHS) {
+            var Ajax1 = null;
+            //声明
+            if(window.XMLHttpRequest){Ajax1 = new XMLHttpRequest;}//兼容
+            else {Ajax1 = new ActiveXObject("Microsoft.XMLHTTP");}
+
+            if(get_or_post === "get" || get_or_post === "GET"){//如果是小写或者大写的get请求
+                alert("暂未添加get提交功能");
+            }
+            Ajax1.open(get_or_post,url,ture_or_false);
+            // 提交表单数据的请求值：application/x-www-form-urlencoded  //提交JSON格式的请求值：application/json
+            Ajax1.setRequestHeader("Content-type","application/x-www-form-urlencoded","charset=UTF-8");
+            //Ajax1.send(JSON.stringify(NeiRong));//将javascript值处理成字符串后发送
+            Ajax1.send(NeiRong);
+
+            Ajax1.onreadystatechange = function () {
+                if (Ajax1.readyState === 4 && Ajax1.status === 200) {
+                    var type = Ajax1.getResponseHeader("Content-Type");//获取响应类型
+                    //JSON响应
+                    if(type === "application/json"){
+                        HuiDiaoHS(JSON.parse(Ajax1.responseText));
+                    }
+                    //字符串响应
+                    else{HuiDiaoHS(Ajax1.responseText);}
+                }
+            };//异步可以放前面 同步要放后面
+        }
+        function ChuLi1(CanShu1) {
+            console.log(CanShu1);
+        }
+    </script>
+</body>
+</html>

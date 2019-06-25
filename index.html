@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans"><!--简体中文；其它：繁体中文页面：zh-cmn-Hant 英语页面：en -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"><!--优先使用chrome内核渲染页面-->
+    <meta http-equiv="x-ua-compatible" content="ie=edge"><!--在桌面开发的时候可以让IE浏览器以最新的模式渲染页面-->
+    <meta name="renderer" content="webkit"><!--设置 360 浏览器渲染模式：webkit 为极速内核，ie-comp 为 IE 兼容内核，ie-stand 为 IE 标准内核。-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--如果安装了 Google Chrome Frame，则使用 GCF 来渲染页面，如果没有安装 GCF，则使用最高版本的 IE 内核进行渲染。-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <title>node.js笔记</title><!--对SEO极其重要 谷歌上最多70个字符-->
+
+    <!-- 允许控制资源的过度加载 -->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'">--><!-- 尽早地放置在文档中 --><!-- 仅应用于该标签下的内容 -->
+    <meta name="application-name" content="王午阳的网站">  <!-- Web 应用的名称（仅当网站被用作为一个应用时才使用）-->
+    <!--all:文件将被检索，且链接可以被查询；none:与all相反； index:文件可以被检索，noindex:反之；follow:页面上的链接可以被查询；nofollow:反之；-->
+    <meta name="robots" content="index,follow"><!--告诉搜索引擎不要获取网页，并阻止其进入链接（可提升SEO） robots：所有搜索引擎-->
+    <meta name="google" content="notranslate"><!--禁止谷歌浏览器弹出是否翻译语言的弹窗-->
+    <!--<meta http-equiv="refresh" content="10;URL='http://wangwuyang.cn'">--><!--30s后跳到其他页面（不要后面的参数则是刷新效果）-->
+    <meta content="telephone=no" name="format-detection" /><!-- 忽略数字自动识别为电话号码 -->
+    <meta content="email=no" name="format-detection" /><!-- 忽略识别邮箱 -->
+
+    <meta name="HandheldFriendly" content="true"><!--貌似是针对不认识viewport的设备(苹果都成街机了，谁闲的没事用塞班看网页？)(，比如黑莓)-->
+    <meta name="MobileOptimized" content="320">   <!-- 微软的老式浏览器 -->
+    <meta name="screen-orientation" content="portrait">  <!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"> <!-- QQ强制竖屏 -->
+    <meta name="full-screen" content="yes">    <!-- UC强制全屏 -->
+    <meta name="x5-fullscreen" content="true">    <!-- QQ强制全屏 -->
+    <meta name="browsermode" content="application"><!-- UC应用模式 -->
+    <meta name="x5-page-mode" content="app"><!-- QQ应用模式 -->
+    <meta name="msapplication-tap-highlight" content="no"><!-- windows phone 点击无高光 -->
+
+    <!--通过手机百毒打开网页时，百毒可能会对你的网页进行转码，只展现页面内容，头底部会被替换并且一般会加点广告==尿性不改-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--苹果的设备可以说单成一家，有很多特定的设置，有兴趣的小伙伴可以到官方文档说明查看详细 https://developer.apple.com/develop/-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /> <!--有个apple，这是苹果设备专用的，是否启用 WebApp 全屏模式；-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> <!-- 隐藏状态栏/设置状态栏颜色：：只有在开启WebApp全屏模式时才生效。content的值为default | black | black-translucent 。 -->
+    <meta name="apple-mobile-web-app-title" content="王午阳的网站">   <!-- 添加到主屏后的标题 -->
+    <meta name="Keywords" content="王午阳的个人网站"> <!--告诉浏览器网页内容，不过现在已经没用了-->
+    <meta name="description" content="王午阳,笔记,个人网站,前端笔记,总页面"><!--会被用在搜索引擎的结果页（可略微提升SEO）-->
+    <meta name="author" content="王午阳,770799669"> <!--作者-->
+    <link rel="icon" type="image/ico" href="wenjian/public/img/lian1.jpg" /><!--网页ico图标设置-->
+    <!--<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />--><!--rss订阅-->
+    <!--<meta name="google" content="nositelinkssearchbox">-->    <!-- 告诉 Google 不显示网站链接的搜索框 -->
+    <!--<meta name="google-site-verification" content="verification_token">-->   <!-- 验证 Google 搜索控制台的所有权 -->
+    <!--<meta name="generator" content="program">-->     <!-- 用来命名软件或用于构建网页（如 - WordPress、Dreamweaver）-->
+    <!--<meta name="rating" content="General">-->    <!-- 基于网站内容给出一般的年龄分级 -->
+    <!--<meta name="referrer" content="never"> -->   <!-- 允许控制 referrer 信息如何传递 -->
+    <!-- <meta http-equiv="x-dns-prefetch-control" content="off"> -->  <!-- 通过设置为 “off” 完全退出 DNS 预取 -->
+    <!-- <meta http-equiv="set-cookie" content="name=value; expires=date; path=url"> --><!-- 在客户端存储 cookie，web 浏览器的客户端识别 -->
+    <meta name="subject" content="学习笔记">    <!-- 关于你的网站主题的简短描述 -->
+    <!--<meta name="abstract" content="《论儒法对当今的影响》">-->    <!-- 非常简短（少于 10 个字）的描述。主要用于学术论文。-->
+    <link rel="stylesheet" href="../public_file/public_file.css">
+    <link rel="stylesheet" href="wenjian/css.css" />
+</head>
+<body>
+<div class="Fu">
+    <section class="Tou">
+        <h1>前端知识点总结</h1>
+        <form class="SouSuo">
+            <input type="text" name="SouSuo" value="搜索文章" />
+        </form>
+        <ul>
+            <li><a href="./vuejs/vue-cli教程.html">vue-cli使用教程<span>(已完成)</span></a></li>
+            <li><a href="./webpack/基础教程.html">webpack基础教程<span>(已完成)</span></a></li>
+            <li><a href="./git">git基础使用教程<span>(已完成)</span></a></li>
+
+            <li><a href="./html">html</a></li>
+            <li><a href="./css">css</a></li>
+            <li><a href="./js">js</a></li>
+
+            <li><a href="./node.js/node.js教程.html">node.js教程</a></li>
+            <li><a href="./cmd">cmd命令行</a></li>
+            <li><a href="./dcloud/uni_app">dcloud公司旗下的uni_app混合开发框架</a></li>
+            <li><a href="./easyMock">easyMock教程<span>(空)</span></a></li>
+            <li><a href="./mysql">mysql教程<span>(半完成)</span></a></li>
+
+
+            <li><a href="./APICloud">APICloud混合开发框架</a><span>(无)</span></li>
+            <li><a href="./bootstorp">bootstorp响应式框架</a><span>(无)</span></li>
+            <li><a href="./svn">svn基础使用教程<span>(无)</span></a></li>
+            <li><a href="./iview">iview</a><span>(无)</span></li>
+            <li><a href="./php">php</a><span>(无)</span></li>
+            <li><a href="./微信小程序">微信小程序<span>(空)</span></a></li>
+        </ul>
+    </section>
+    <section class="ZhuTi">
+
+    </section>
+    <section class="Wei">
+
+    </section>
+</div>
+</body>
+</html>

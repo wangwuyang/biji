@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function foo(x) {
+    var tmp = 3;
+    return function (ba) {
+      alert(ba);
+    }
+  }
+  var bar = foo(2); // bar 现在是一个闭包
+
+
+  bar(10);
+
+  let pool = "ABCDEFGHIJKLIMNOPQRSTUVWSYZabcdefghijklmnopqrstuvwxyz1234567890"
+  for(let i = 0; i < 5; i++ ) {
+    let str = pool[this.makeNum(0, pool.length - 1)]
+  }
+</script>
+</body>
+</html>

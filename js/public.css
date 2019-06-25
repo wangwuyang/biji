@@ -1,0 +1,30 @@
+
+/*基本css样式设置*/
+*{padding:0;margin:0;}     /*所有元素padding和margin的默认边距设为0*/
+ul > li{list-style: none;}   /*取消ul中li的默认样式*/
+a{text-decoration: none;display: block;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;color: #ffe48a;}
+/*取消默认样式：下划线；使a标签变为块元素 减少html标签总量 增加DOM性能*/ /*取消a标签点击时的颜色*/
+p{word-wrap:break-word;}/*强制《单词》换行*/
+h1,h2,h3,h4,h5,h6{text-align: center;}
+h1{padding: 2.4rem;}  h2{padding: 2rem;}  h3{padding: 1.6rem;}  h4{padding: 1.2rem;}  h5{padding: .8rem;}  h6{padding:.4rem;}
+
+body{cursor: default;font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;  }
+html{font-size: 62.5%;color:black;}    /*默认字体大小设为原本的62.5%,即10px—方便rem单位*/
+
+/*常用class设定*/
+/*清除浮动*/
+#Fu .QCFloat{clear:both;}
+/*需要居中的元素的父级元素设置*/
+#Fu .Class_YuanSuJuZhong{position: relative;left: -50%;display: block;}
+/*禁止点击的class样式*/
+#Fu .jinZhiDianJi{  cursor: not-allowed;color: #666;}
+/*文字颜色的渐变效果*/
+#Fu .wenZiJianBian{
+    font-weight: 700;
+    background: -webkit-linear-gradient(left,blue,white,blue); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,blue,white,blue); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,blue,white,blue); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right,blue,white,blue); /* 标准的语法（必须放在最后）*/
+    -webkit-background-clip: text;
+    color: transparent;
+}

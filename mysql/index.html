@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><!--GBK-->
+    <title>MySQL数据库</title>
+    <style>
+        ul{text-align:left;padding: 100px 0;margin-left: 20%;}
+        strong{min-width: 200px;display: inline-block;}
+    </style>
+</head>
+<body>
+<ul>
+    <li>
+        <strong>创建数据库:</strong>
+        <span>CREATE DATABASE 数据库名【create database】</span>
+    </li>
+    <li>
+        <strong>删除数据库:</strong>
+        <span>DROP DATABASE 库名【drop database】</span>
+    </li>
+    <li>
+        <strong>查看所有数据库:</strong>
+        <span>show databases【SHOW DATABASES】</span>
+    </li>
+    <li>
+        <strong>选中数据库:</strong>
+        <span>use 库名【USE】</span>
+    </li>
+    <li>
+        <strong>查看当前数据库中的表:</strong>
+        <span>show tables【SHOW TABLES】</span>
+    </li>
+    <li>
+        <strong>创建表:</strong>
+        <span>CREATE TABLE 表名(字符1 类型(长度),字符2 类型(长度)...)【create table】</span>
+    </li>
+    <li>
+        <strong>删除表:</strong>
+        <span>DROP TABLE 表名【drop table】</span>
+    </li>
+    <li>
+        <strong>修改表名</strong>
+        <span>alter table 旧表名 rename 新表名</span>
+    </li>
+    <li>
+        <strong>查看表的创建语句:</strong>
+        <span>SHOW CREATE TABL 表名\G【show create table】</span>
+    </li>
+    <li>
+        <strong>查看表的详细信息/结构:</strong>
+        <span>DESC 表名【desc】</span>
+    </li>
+    <li>
+        <strong>指定表引擎和字符集(未测试):</strong>
+        <span>指定引擎：ENGINE = lnnoDB (i还是l？)</span>
+        <span> 指定表默认字符集：DEFAULT CHARSET = utf8</span>
+    </li>
+    <li>
+        <strong>修改表的字段类型:</strong>
+        <span>alter table 表名 modify 字段名 字段类型(长度)</span>
+        <span> 示例：alter table biao1 modify hang1 varchar(32);</span>
+    </li>
+    <li>
+        <strong>增加表的字段:</strong>
+        <span>alter table 表名 add column 字段名 字段类型(长度)</span>
+        <span> 示例：alter table biao1 add column hang2 varchar(32);</span>
+    </li>
+    <li>
+        <strong>增加表的字段时使其在另一个字段后面:</strong>
+        <span>alter table 表名 add 字段名 字段类型(长度) after 另一个字段</span>
+        <span> 示例：alter table biao1 add hang3 int(32) after hang1</span>
+    </li>
+    <li>
+        <strong>增加表的字段时使其位置处于第一个:</strong>
+    </li>
+    <li>
+        <strong>删除表字段</strong>
+        <span>alter table 表名 drop column 字段名</span>
+        <span> 示例：alter table biao1 drop column hang3</span>
+    </li>
+    <li>
+        <strong>表字段改名/表字段改名（改类型）</strong>
+        <span>alter table 表名 change 原字段名 新字段名 字段类型（长度）</span>
+        <span> 示例：alter table biao1 change hang2 hang3 varchar(60)</span>
+    </li>
+    <li>
+        <strong>修改表字段排列顺序</strong>
+    </li>
+</ul>
+
+</body>
+</html>

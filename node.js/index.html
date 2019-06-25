@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>node.js笔记</title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--默认使用Google Chrome Frame进行渲染，如果没有安装gcf则使用IE的最新内核来渲染-->
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content="王午阳,node.js笔记"> <!--关键词-->
+    <meta name="Description" content="王午阳,node.js笔记">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+    <style>
+        *{padding: 0;margin: 0;}
+        html{font-size: 62.5%;background-color: white;font-family: 幼圆;}
+        body{cursor: default;font-size: 1.6rem;}
+        h1,h2,h3,h4,h5,h6{text-align: center;padding: 1rem 0;}
+        ul,li{list-style: none;}                           /*取消ul,li的默认样式：点*/
+        /*取消默认样式：下划线；取消a标签点击时的颜色*/
+        a{text-decoration: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;}
+
+        body .QCFloat{clear:both;}/*清除浮动*/
+        body .BuKeDianJi{cursor: not-allowed;color: #666;}
+
+        .Fu{min-width: 320px;margin: 1rem auto 10rem auto;}
+        .BianKuang{border: solid 1px #33CCCC;padding: 1rem;}
+
+        .ZhuTi_1{}
+        .ZhuTi_1 > div{padding: 0 2rem;}
+        .ZhuTi_1 > div > h2{}
+        .ZhuTi_1 > div > ul{}
+        .ZhuTi_1 > div > ul > li{}
+        .ZhuTi_1 > div > ul > li strong{display:inline-block;padding: .6rem 1rem;font-size:1.6rem;}
+        .ZhuTi_1 > div > ul > li span{display:inline-block;padding: .6rem 1rem;}
+    </style>
+    <script>
+
+    </script>
+</head>
+<body>
+
+<div class="Fu">
+    <article class="Tou"></article>
+    <article class="ZhuTi">
+        <section class="ZhuTi_1" id="ZhuTi_1"></section>
+        <section class="ZhuTi_2">
+            <h3>ES6/webpack笔记</h3>
+            <h4>export与import（ES6的输出与输入功能）</h4>
+            <div>
+                <pre>新建个a.js文件，内容为：
+                    let HanShu = function(CanShu1){
+                        alert(CanShu1);
+                    };
+                    export {HanShu};
+
+                    或者写成
+
+                    export let HanShu = function(CanShu1){
+                        alert(CanShu1);
+                    }
+                </pre>
+                <p>这段代码的意思是，把a函数保存起来 输出去（对应的，会有一个地方来用它）</p>
+                <pre>同级目录下再建个b.js文件，内容为：
+                    import {HanShu} from "./a.js";
+                    console.log(HanShu("123"));
+                    //输出123
+                </pre>
+                <p>这里的import 便是对应的 输入命令 把a.js里创建的函数引入进来 并使用</p>
+                <h4>export default (默认输出模式)</h4>
+                <p>上代码：</p>
+                <pre>a.js里：
+                    export default function(CanShu1){
+                        alert(CanShu1);
+                    }
+                    b.js里：
+                     import aaa from "./a.js";
+                    console.log(aaa("123"));
+                    //输出123
+                </pre>
+                <p>这种属于不想知道输出名字的形式 姑且称之为默认形式吧，意思是，把东西引入后，我直接赋值给aaa，然后该咋用咋用</p>
+                <p>还有些其他用法，以后再补充，没补充的话读者就直接去查吧</p>
+            </div>
+            <h4>webpack服务器（webpack-dev-server）</h4>
+            <div>
+
+            </div>
+        </section>
+    </article>
+</div>
+
+<script>
+    //获取ID或者class 第一个参数接受两个值“.”代表class “#”代表id；第二个参数为名称
+    function HuoQu(ID_or_CLASS,name) {
+        if(ID_or_CLASS ==="#"){
+            return document.getElementById(name);
+        }
+        if(ID_or_CLASS ==="."){
+            return document.getElementsByClassName(name);
+        }
+    }
+    function SC() {
+        let B = {
+            BiaoTi:"REPL 命令",
+            NR:[
+                ["退出当前终端:","ctrl + c"],
+                ["退出 Node REPL:","ctrl + c按下两次","或者ctrl + d"],
+                ["查看输入的历史命令:","向上/向下 键"],
+                ["列出当前命令:","tab 键"],
+                ["列出使用命令:",".help"],
+                ["退出多行表达式:","  .break"],
+                ["退出多行表达式:",".clear"],
+                ["保存当前的Node REPL会话到指定文件:",".save filename"],
+                ["载入当前Node REPL会话的文件内容:"," .load filename"]
+            ]
+        };
+        let C = {
+            BiaoTi:"node命令",
+            NR:[
+                ["cnpm细节","要与npm在同一目录下(疑)",
+                    "目前成功示例：（node>node_modules） cnpm与npm共同放在node目录下的node_modules里，cnpm与npm放在了node目录下，环境变量路径填的node目录"],
+                ["查看当前目录已安装的插件","npm list"],
+                ["安装全局模块","npm install 模块名称 -g"],
+                ["删除全局模块","npm uninstall -g 模块名称"],
+                [
+                    "删除本地模块",
+                    "npm uninstall 模块名称（删除模块，但不删除模块留在package.json中的对应信息）",
+                    "npm uninstall 模块名称 --save （删除模块，同时删除模块留在package.json中dependencies下的对应信息）",
+                    "npm uninstall 模块名称 --save-dev （删除模块，同时删除模块留在package.json中devDependencies下的对应信息）"
+                    ],
+                ["查看所有全局安装的模块","npm list --depth=0 -global"],
+                ["查看所有高级的npm moudles","npm list --depth=0"],
+                ["node -v有效而npm -v 无效：","删掉c:/用户下跟node或npm有关的文件"]
+
+            ]
+        };
+
+
+        DongTaiShengCheng(B);
+        DongTaiShengCheng(C);
+    }
+    SC();
+    function DongTaiShengCheng(DuiXiang){
+       // let YiJi_length = Object.getOwnPropertyNames(DuiXiang.YiJi).length;
+        //创建一级内容区——div div里包含标题与内容
+        let YiJi = document.createElement("div");
+        //一级的标题部分
+        let YiJi_BiaoTi = document.createElement("h2");
+        let YiJi_BiaoTi_txt = document.createTextNode(DuiXiang.BiaoTi);
+        YiJi_BiaoTi.appendChild(YiJi_BiaoTi_txt);
+        YiJi.appendChild(YiJi_BiaoTi);
+        //二级内容区
+        let ErJi = document.createElement("ul");
+        YiJi.appendChild(ErJi);
+        //三级内容区(li)
+        //将三级内容下的属性们在循环外单独列一个数组
+        /*let SanJi_ShuXings = [];
+        for (let i in DuiXiang.NR) {
+            if (DuiXiang.NR.hasOwnProperty(i)) {
+            SanJi_ShuXings.push(i);
+            }
+        }*/
+        //三级里的内容们分别赋值
+        for(let i = 0;i<DuiXiang.NR.length;i++){
+            let SanJi = document.createElement("li");
+            ErJi.appendChild(SanJi);
+            let SanJi_A = document.createElement("strong");
+            let SanJi_A_text =  document.createTextNode(DuiXiang.NR[i][0]);
+            SanJi_A.appendChild(SanJi_A_text);
+            SanJi.appendChild(SanJi_A);
+
+            for(let i2 =1;i2<DuiXiang.NR[i].length;i2++){
+                let SanJi_B = document.createElement("span");
+                let SanJi_B_text =  document.createTextNode(DuiXiang.NR[i][i2]);
+                SanJi_B.appendChild(SanJi_B_text);
+                SanJi.appendChild(SanJi_B);
+            }
+        }
+        let FuYuanSu = HuoQu("#","ZhuTi_1");
+        FuYuanSu.appendChild(YiJi);
+    }
+</script>
+</body>
+</html>

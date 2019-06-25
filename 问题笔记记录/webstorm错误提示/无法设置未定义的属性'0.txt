@@ -1,0 +1,26 @@
+
+问题：无法设置未定义的属性'0
+
+webstorm提示Cannot set property '0' of undefined（无法设置未定义的属性'0'）
+产生原因：对象未命名
+例子：
+（四级联动部分）
+问题代码：
+var SSLD_Qu = new Array();
+for(var n =0;n<SSLD_Sheng.length;n++){
+    for(var n1 =0;n1<SSLD_Shi[n].length;n1++){
+        SSLD_Qu[n][n1] = Object.keys(SSLD[SSLD_Sheng[n]][SSLD_Shi[n][n1]]);
+    }
+}
+解决代码：
+var SSLD_Qu = new Array();
+for(var n =0;n<SSLD_Sheng.length;n++){
+    SSLD_Qu[n] = new Array();//加上这句话后可解决问题
+    for(var n1 =0;n1<SSLD_Shi[n].length;n1++){
+        SSLD_Qu[n][n1] = Object.keys(SSLD[SSLD_Sheng[n]][SSLD_Shi[n][n1]]);
+    }
+}
+解决原理：SSLD_Qu[n][n1] 是个二维数组对象（姑且这么叫吧）
+SSLD_Qu = new Array();只声明了SSLD_Qu是个对象
+SSLD_Qu[n] = new Array(); 声明了二维的对象
+所以解决了

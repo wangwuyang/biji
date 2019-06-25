@@ -1,0 +1,6 @@
+body{
+    font-family: 'Microsoft YaHei','Hiragino Sans GB',Helvetica,Arial,'Lucida Grande',sans-serif;
+    font-size:15px;
+}
+.about_generator label{line-height:24px;display:inline-block;margin-top:10px;}
+.add-default label {font-weight:700;}

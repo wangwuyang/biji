@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>git教程</title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--默认使用Google Chrome Frame进行渲染，如果没有安装gcf则使用IE的最新内核来渲染-->
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content="王午阳,node.js笔记"> <!--关键词-->
+    <meta name="Description" content="王午阳,node.js笔记">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+    <style>
+        *{padding: 0;margin: 0;}
+        html{font-size: 62.5%;background-color: white;font-family: 幼圆;}
+        body{cursor: default;font-size: 1.6rem;}
+        h1,h2,h3,h4,h5,h6{text-align: center;}
+        h1{font-size:2.2rem;padding: 1.6rem 0;}
+        h2{font-size:2rem;  padding: 1.4rem 0;}
+        h3{font-size:1.8rem;padding: 1.2rem 0;}
+        h4{font-size:1.6rem;padding: 1rem 0;}
+        h5{font-size:1.4rem;padding: .8rem 0;}
+        h6{font-size:1.2rem;padding: .6rem 0;}
+
+        ul,ul > li{list-style: none;}/*取消ul,li的默认样式：点*/
+        li{padding: 1rem 0;}
+        /*取消默认样式：下划线；取消a标签点击时的颜色*/
+        a{text-decoration: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;}
+        p{padding: .6rem 0;}/*text-indent: 2em;*/
+
+        body .QCFloat{clear:both;}/*清除浮动*/
+        body .BuKeDianJi{cursor: not-allowed;color: #666;}
+
+        .g-Fu{
+            min-width: 320px;margin:0 auto;
+            background-color: white;/*颜色渐变兼容写法*/
+            background: -webkit-linear-gradient(left,rgba(100,100,100,1),rgba(255,255,255,1)); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(right,rgba(100,100,100,1),rgba(255,255,255,1)); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(right,rgba(100,100,100,1),rgba(255,255,255,1)); /* Firefox 3.6 - 15 */
+            background: linear-gradient(45deg,rgba(100,100,100,1),rgba(255,255,255,1)); /* 标准的语法（必须放在最后）*/
+        }
+
+        .g-Tou{}
+        .g-ZhuTi{padding: 1rem;}
+        .g-ZhuTi_1{padding: 2rem;}
+
+        .BianKuang{border: solid 1px #33CCCC;padding: 1rem;}
+
+
+        /*元件部分*/
+        /*元件——暗示(提示)元件*/
+        .u-hint{color:green;font-size: 1.2rem;padding: .4rem;}
+        .u-emphasis{padding: .4rem .6rem;margin: .4rem .6rem; color: white;background-color:rgba(43,58,66,1);font-size: 1.8rem;display: block;}
+        .u-preFu{padding: .4rem .6rem;margin: .4rem .6rem; color: white;background-color:rgba(43,58,66,1);font-size: 1.8rem;overflow: scroll;}
+
+
+        .u-red{color: red;}
+        /*响应式 rem*/
+        @media screen and (min-width :1024px){ html{font-size:80%;} }
+        @media screen and (max-width :1024px){ html{font-size:80%;} }
+        @media screen and (max-width :900px){ html{font-size:78%;} }
+        @media screen and (max-width :850px){ html{font-size:76%;} }
+        @media screen and (max-width :800px){ html{font-size:74%;} }
+        @media screen and (max-width :750px){ html{font-size:72%;} }
+        @media screen and (max-width :700px){ html{font-size:70%;} }
+        @media screen and (max-width :650px){ html{font-size:68%;} }
+        @media screen and (max-width :600px){ html{font-size:66%;} }
+        @media screen and (max-width :550px){ html{font-size:64%;} }
+        @media screen and (max-width :500px){ html{font-size:63%;} }
+        @media screen and (max-width :450px){ html{font-size:62.5%;} }
+    </style>
+    <script src="../../public_file/vue.js"></script>
+</head>
+<body>
+<div class="g-wrap">
+    <article class="g-tou">
+        <h1>git 教程</h1>
+        <h2>windows环境下安装</h2>
+        <div>
+            <button>速成版</button>
+            <button>详细版</button>
+        </div>
+    </article>
+    <article class="g-zhuTis">
+        <section>
+            <h5>1 在官网下载安装git</h5>
+            <div>
+                <h5>安装完成后，还需要最后一步——设置自己的代号</h5>
+                <p class="u-emphasis">$ git config --global user.name "自己的用户名"</p>
+                <p class="u-emphasis">$ git config --global user.email "自己的邮箱"</p>
+                <p class="u-hint">
+                    注意<code>git config</code>命令的<code class="u-red">--global</code>参数，
+                    用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，<br />
+                    当然也可以对某个仓库指定不同的用户名和Email地址。<br />
+                </p>
+            </div>
+        </section>
+        <section>
+            <h5>2 创建一个git版本库</h5>
+            <p>cd 进入打算作为版本库的目录(创建目录：mkdir 想要创建的目录名)，输入以下指令：</p>
+            <p class="u-emphasis">$ git init</p>
+            <p class="u-hint">
+                <span>默认输出：</span>Initialized empty Git repository in /Users/michael/learngit/.git/<br />
+                如果你没有看到.git目录，那是因为这个目录默认是隐藏的，用ls -ah命令就可以看见。
+            </p>
+        </section>
+        <section>
+            <h5>3、如何提交</h5>
+            <p>在版本库目录下新建文件 然后将要提交的东西保存到暂存区（git add），
+                经过N次git add 确定没有需要修改的东西后，进行提交(git commit -m "这里写提交说明/备注，可以方便以后维护和管理")
+            </p>
+            <p class="u-emphasis">$ git add</p>
+            <p class="u-emphasis">$ git commit -m "瞎实验提交下代码"</p>
+            <p class="u-hint">关于git add的说明：还有一种方式，是git add .  多加一个点来说明所有文件都进行提交</p>
+            <p class="u-hint">
+                git commit命令执行成功后会告诉你，<br />
+                1 file changed：1个文件被改动（我们新添加的readme.txt文件）；<br />
+                2 insertions：插入了两行内容（readme.txt有两行内容）。<br />
+            </p>
+        </section>
+        <section>
+            <h5>4、如何查看修改</h5>
+            <p>如果不确定文件有没有被改动，或者想知道改动了哪里 那么：</p>
+            <p class="u-emphasis">$ git status</p>
+            <p class="u-hint">无改动、只有修改、有修改有提交 这三者的提示语句不一样 建议都试一下看看</p>
+            <p>如果只进行了修改而没有进行提交，此时可以通过git diff 来查看修改了哪些内容</p>
+            <p class="u-emphasis">$ git diff</p>
+        </section>
+        <section>
+            <h5>4、版本回退</h5>
+            <p>顾名思义 把版本恢复到以前的样子用的，默认显示三坨从最近到最远的提交日志：</p>
+            <p class="u-emphasis">$ git log</p>
+            <pre>
+$ git log
+commit 1094adb7b9b3807259d8cb349e7df1d4d6477073 (HEAD -> master)
+Author: Michael Liao < askxuefeng@gmail.com>
+Date:   Fri May 18 21:06:15 2018 +0800
+
+    append GPL
+
+commit e475afc93c209a690c39c13a46716e8fa000c366
+Author: Michael Liao < askxuefeng@gmail.com>
+Date:   Fri May 18 21:03:36 2018 +0800
+
+    add distributed
+
+commit eaadf4e385e865d25c48e7ca9c8395c3f7dfaef0
+Author: Michael Liao < askxuefeng@gmail.com>
+Date:   Fri May 18 20:59:18 2018 +0800
+
+    wrote a readme file
+    </pre>
+            <p>如果数据有些乱 可以加个参数: --pretty=oneline</p>
+            <p class="u-emphasis">$ git log --pretty=oneline</p>
+            <pre>
+$ git log --pretty=oneline
+1094adb7b9b3807259d8cb349e7df1d4d6477073 (HEAD -> master) append GPL
+e475afc93c209a690c39c13a46716e8fa000c366 add distributed
+eaadf4e385e865d25c48e7ca9c8395c3f7dfaef0 wrote a readme file
+    </pre>
+            <p>
+                需要友情提示的是，你看到的一大串类似1094adb...的是commit id（版本号），
+                和SVN不一样，Git的commit id不是1，2，3……递增的数字，而是一个SHA1计算出来的一个非常大的数字，
+                用十六进制表示，而且你看到的commit id和我的肯定不一样，以你自己的为准。
+                为什么commit id需要用这么一大串数字表示呢？因为Git是分布式的版本控制系统，
+                后面我们还要研究多人在同一个版本库里工作，如果大家都用1，2，3……作为版本号，那肯定就冲突了。
+                每提交一个新版本，实际上Git就会把它们自动串成一条时间线。如果使用可视化工具查看Git历史，
+                就可以更清楚地看到提交历史的时间线：
+            </p>
+            <p>首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交1094adb...（注意我的提交ID和你的肯定不一样），
+                上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100。
+            </p>
+            <p>
+                现在，我们要把当前版本回退到上一个版本,就可以使用git reset命令：
+                <span class="u-emphasis">$ git reset --hard HEAD^</span>
+                <span> 不出意外应该会提示 HEAD is now at e475afc add distributed（当前版本位于【git版本对应的commit id】的位置）</span>
+            </p>
+            <p>成功回退后再运行git log 会发现刚才被回退的那个最新的版本已经没有了，这时候如果又想再回去也是可以的：<br />
+                老规矩，首先还是需要获取git的commitId值:<br />
+                1、偷懒点的话，如果命令行工具还没关，就往上翻找到刚才运行git log时最新那个版本的对应commitId值就行<br />
+                2、更好的方式是通过git reflog 命令去查看每次提交时对应的commitId值
+                (这就是之前说的 gitAdd时一定要加上-m的好处，加了的话这里就会显示出注解来，避免抓瞎）<br />
+                然后用reset跳转：<br />
+            </p>
+            <p class="u-emphasis">$ git reset --hard 1094aba1</p>
+            <span class="u-hint">commit id 不用写全 那样太麻烦 写个五六七八位就行，git会自动去对应</span>
+        </section>
+        <section>
+            <h4>N、远程仓库相关</h4>
+            <p>
+                要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；<br />
+
+                关联后，使用命令git push -u origin master第一次推送master分支的所有内容；<br />
+
+                此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；<br />
+
+
+                要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。<br />
+
+                Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。<br />
+            </p>
+        </section>
+        <section>
+            <h4>N、分支相关</h4>
+            <p>
+                Git鼓励大量使用分支：<br />
+                查看分支：git branch <br />
+                查看分支：git branch <br />
+                查看远程分支：git branch -r <br />
+                查看所有分支(包括远程和本地分支）： git branch -a <br />
+                创建分支：git branch < name><br />
+                切换分支：git checkout < name><br />
+                创建+切换分支：git checkout -b < name><br />
+                合并某分支到当前分支：git merge < name><br />
+                删除分支：git branch -d < name><br />
+
+                <strong class="u-hint">
+                    通常，合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。<br />
+                    如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。<br />
+                    准备合并dev分支，请注意--no-ff参数，表示禁用Fast forward：$ git merge --no-ff -m "merge with no-ff" dev <br />
+                </strong>
+
+                将某分支设置为上游分支: git push --set-upstream 目标分支名 master（不太懂 待测试）<br />
+            </p>
+        </section>
+        <section>
+            <h5>保存当前未完成的代码状态，先去干别的</h5>
+            <div>
+                <p>
+                    保存当前未完成的代码状态，先去干别的,比如说 正在写东西时，突然穿插进来一个任务，那就只能先保存当前任务，避免git报错，
+                    然后去干别的，干完别的后，再回来唤醒保存的当前状态
+                </p>
+                <p>并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该bug，怎么办？</p>
+                <span class="u-emphasis">
+            $ git stash <br />
+            Saved working directory and index state WIP on dev: f52c633 add merge
+        </span>
+                <p>现在，用git status查看工作区，就是干净的</p>
+                <p>干完活回来后 可以用git stash list命令查看当初保存的记录（没错 可以保存多次）：</p>
+                <p>工作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：</p>
+                <p>一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；</p>
+                <p>另一种方式是用git stash pop，恢复的同时把stash内容也删了</p>
+                <span class="u-emphasis">$ git stash pop</span>
+                再用git stash list查看，就看不到任何stash内容了：
+                <span class="u-emphasis">$ git stash list</span>
+                如果保存了多次stash,name运行git stash list时会显示一个数组，输入你想恢复的对应下标即可你可以多次stash，用命令：
+                <span class="u-emphasis">$ git stash apply stash@{0}</span>
+            </div>
+        </section>
+        <section>
+            <h5>分支推送到远程</h5>
+            当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，并且，远程仓库的默认名称是origin。
+            要查看远程库的信息，用git remote：
+            <p><span class="u-emphasis">$ git remote</span>origin</p>
+            或者，用git remote -v显示更详细的信息：
+            <span class="u-emphasis">$ git remote -v</span>
+            origin  git@github.com:michaelliao/learngit.git (fetch)<br />
+            origin  git@github.com:michaelliao/learngit.git (push)<br />
+            上面显示了可以抓取和推送的origin的地址。如果没有推送权限，就看不到push的地址。<br />
+
+            推送分支
+            推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上：
+
+            <span class="u-emphasis">$ git push origin master</span>
+            如果要推送其他分支，比如dev，就改成：
+            <span class="u-emphasis">$ git push origin dev</span>
+        </section>
+        <section>
+            <h5>从远程拉下内容</h5>
+            git pull命令用于从另一个存储库或本地分支获取并集成(整合)。
+            git pull命令的作用是：取回远程主机某个分支的更新，再与本地的指定分支合并，它的完整格式稍稍有点复杂。
+            使用语法<br />
+            <p class="u-emphasis">git pull [options] [< repository> [< refspec>…]]</p>
+            描述将远程存储库中的更改合并到当前分支中。在默认模式下，git pull是git fetch后跟git merge FETCH_HEAD的缩写。<br />
+            更准确地说，git pull使用给定的参数运行git fetch，并调用git merge将检索到的分支头合并到当前分支中。 使用--rebase，它运行git rebase而不是git merge。<br />
+            示例以下是一些示例 <br />
+            <p class="u-emphasis">$ git pull < 远程主机名> < 远程分支名>:< 本地分支名></p>
+            <p class="u-emphasis">
+                <span>比如，要取回origin主机的next分支，与本地的master分支合并，需要写成下面这样 </span><br />
+                <span>$ git pull origin next:master</span>
+            </p>
+            <a href="https://www.yiibai.com/git/git_pull.html">参考链接:易百教程 =>> git =>> git常用命令 =>>git pull部分</a>
+
+
+        </section>
+    </article>
+</div>
+
+
+<section>
+    <h4>从零开始操作：</h4>
+    <div>
+        <p>创建目录：<strong>mkdir lianxi</strong></p>
+        <p>进入目录：<strong>cd lianxi</strong></p>
+        <!--<p>在当前目录创建本地git库：<strong>git init</strong></p>-->
+        <p>在当前目录拉取远程代码：<strong>git clone 远程项目地址</strong></p>
+        <p>创建分支：<strong>git branch 分支名称</strong></p>
+        <p>查看分支：<strong>git branch</strong></p>
+        <p>切换分支：<strong>git checkout 分支名称</strong></p>
+        <p>合并某分支到当前分支：<strong>git merge 分支名称</strong></p>
+        <p>提交修改:<strong>git push origin 分支名(此处待测试) <strong class="u-hint">省略模式下应该可以使用git push</strong></strong></p>
+        <p>获取与本地分支名相同的远程分支内容:<strong>git pull -p 分支名(此处待测试)</strong>||<strong>git pull</strong></p>
+    </div>
+    <h5>可能遇到的问题：git branch 查看分支无任何输出</h5>
+    <p class="u-hint">可能性1：目录位置不对，比如拉下项目后，拉下来的自带一个目录，而你在上层目录操作，那样是无法显示的(删掉.git文件可以重置git命令)</p>
+    <p class="u-hint">
+        查看本地分支： git branch<br />
+        查看远程分支：git branch -r<br />
+        查看所有分支(包括远程和本地分支）： git branch -a<br />
+        现象：新建本地仓库后（git initi），出现这样的问题，当你使用命令git branch 查看本地分支，没有任何信息显示，甚至连master分支都没有显示出来。。
+        解决：执行git add . 和 git commit -m 'commit add'后重新执行 git branch 就可以看见本地分支信息 了
+        分析：任何一个分支必须指向一个commit, 没有任何commit信息就没有任何分支信息，提交第一个commit信息后git自动创建第一个分支master
+        现象：git branch -r查看远程分支信息时，不显示任何信息。。。
+        解决：先执行git fetch  后再执行git branch -r 查看远程分支信息
+        分析：本地仓库和远程仓库本质上时完全独立的，想在本地看见远程仓库的信息就应该fetch一下远程的信息
+        ---------------------
+        作者：zuofanxiu
+        来源：CSDN
+        原文：https://blog.csdn.net/zuofanxiu/article/details/82598029
+        版权声明：本文为博主原创文章，转载请附上博文链接！
+    </p>
+    <h5>网上看到的问题，备份下</h5>
+    <p class="u-hint">
+       问：我在仓库建立了分支,为什么本地git上面通过git branch -a ,显示不出来远程的分支呢?<br />
+       追问：忘记 pull up了  远程建立分支后，要pull  up更新一下本地，就可以显示出来了，新手，弄了几个小时，才弄出来。。
+    </p>
+</section>
+
+<h5>唔。。</h5>
+<section>
+    【master:n. 硕士；主人；大师；教师】<br />
+    【branch：n. 分支；分公司；分部；树枝；支流；岔路；（血管）分枝】<br />
+    【checkout：n. 检验；签出；结账台；检出】<br />
+    【merge:vi. 合并；融合】
+</section>
+
+
+
+<section>
+    <h4>git pull命令（将远程存储库中的更改合并到当前分支中）</h4>
+    <div>
+        以下是一些示例 -<br />
+        $ git pull < 远程主机名> < 远程分支名>:< 本地分支名><br />
+
+        比如，要取回origin主机的next分支，与本地的master分支合并，需要写成下面这样 -<br />
+        $ git pull origin next:master<br />
+
+        如果远程分支(next)要与当前分支合并，则冒号后面的部分可以省略。上面命令可以简写为：<br />
+        $ git pull origin next<br />
+
+        上面命令表示，取回origin/next分支，再与当前分支合并。实质上，这等同于先做git fetch，再执行git merge。<br />
+        $ git fetch origin<br />
+        $ git merge origin/next<br />
+
+        在某些场合，Git会自动在本地分支与远程分支之间，建立一种追踪关系(tracking)。比如，在git clone的时候，所有本地分支默认与远程主机的同名分支，建立追踪关系，也就是说，本地的master分支自动”追踪”origin/master分支。<br />
+        Git也允许手动建立追踪关系。<br />
+        $ git branch --set-upstream master origin/next<br />
+
+        上面命令指定master分支追踪origin/next分支。<br />
+        如果当前分支与远程分支存在追踪关系，git pull就可以省略远程分支名。<br />
+        $ git pull origin<br />
+
+        上面命令表示，本地的当前分支自动与对应的origin主机”追踪分支”(remote-tracking branch)进行合并。<br />
+        如果当前分支只有一个追踪分支，连远程主机名都可以省略。<br />
+        $ git pull<br />
+
+        上面命令表示，当前分支自动与唯一一个追踪分支进行合并。<br />
+        如果合并需要采用rebase模式，可以使用–rebase选项。<br />
+        $ git pull --rebase < 远程主机名> < 远程分支名>:< 本地分支名><br />
+
+        git fetch和git pull的区别<br />
+
+        git fetch：相当于是从远程获取最新版本到本地，不会自动合并。<br />
+        $ git fetch origin master<br />
+        $ git log -p master..origin/master<br />
+        $ git merge origin/master<br />
+
+        以上命令的含义：<br />
+
+        首先从远程的origin的master主分支下载最新的版本到origin/master分支上然后比较本地的master分支和origin/master分支的差别最后进行合并<br />
+        上述过程其实可以用以下更清晰的方式来进行：<br />
+        $ git fetch origin master:tmp<br />
+        $ git diff tmp<br />
+        $ git merge tmp<br />
+
+        2. git pull：相当于是从远程获取最新版本并merge到本地<br />
+        git pull origin master<br />
+        上述命令其实相当于git fetch 和 git merge在实际使用中，git fetch更安全一些，因为在merge前，我们可以查看更新情况，然后再决定是否合并。原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/git/git_pull.html<br />
+
+
+    </div>
+</section>
+
+<article>
+    <h2>git常用指令</h2>
+    <div>
+        <p>同盘下切换目录：cd xxxx/xxxx     ————cd 目录名/目录名/目录名</p>
+        <p>不同盘切换目录: cd /d 盘符:\目录\目录 （cmd）</p>
+
+        <p>查看当前目录路径: pwd</p>
+        <p>查看当前目录下有哪些文件: dir</p>
+        <p>在当前目录下创建目录: mkdir</p>
+        <p>把当前目录变成Git可以管理的仓库: git init</p>
+        <p>将目录或者文件添加到git库里: git add 文件名</p>
+        <p>将添加到git库里的目录文件提交: git commit -m "你想说的话"(win中文目录，不带 -m 出了问题)</p>
+        <p>查看仓库状态（比如修改状态）:git status</p>
+        <p>查看文件的修改信息:git diff 文件名</p>
+        查看历史操作记录及其对应commitId值:git reflog <br />
+        查看分支：git branch <br />
+        查看远程分支：git branch -r <br />
+        查看所有分支(包括远程和本地分支）： git branch -a <br />
+        创建分支：git branch < name><br />
+        切换分支：git checkout < name><br />
+        创建+切换分支：git checkout -b < name><br />
+        合并某分支到当前分支：git merge < name><br />
+        删除分支：git branch -d < name><br />
+        提交代码到服务器:git push相关<br />
+        从服务器拉下代码:git pull相关<br />
+    </div>
+</article>
+<div>
+    <h2>vi操作</h2>
+    vi被运行时，通常处在命令模式下，键入以下命令 可以使vi退出命令模式，进入输入模式：I（i）、A（a）、O（o）。
+    <p>按ESC键 跳到命令模式，然后：</p>
+    <p>:w 保存文件但不退出vi</p>
+    <p>:w file 将修改另外保存到file中，不退出vi</p>
+    <p> :w! 强制保存，不推出vi</p>
+    <p>:wq 保存文件并退出vi</p>
+    <p>:wq! 强制保存文件，并退出vi</p>
+    <p> q: 不保存文件，退出vi</p>
+    <p> :q! 不保存文件，强制退出vi</p>
+    <p> :e! 放弃所有修改，从上次保存文件开始再编辑</p>
+</div>
+
+
+<div>
+    <h3>其他</h3>
+    <h5>git add .提交时 忽略一定的文件 需要在.gitignore文件中设置,例：</h5>
+    <pre>
+.DS_Store
+node_modules/
+dist/
+npm-debug.log
+example.html
+    </pre>
+</div>
+</body>
+
+</html>

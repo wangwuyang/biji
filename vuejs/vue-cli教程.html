@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*元件部分*/
+        /*元件——暗示(提示)元件*/
+        .u-hint{color:green;font-size: 1.2rem;padding: .4rem;}
+        .u-emphasis{padding: .4rem .6rem;margin: .4rem .6rem; color: white;background-color:rgba(43,58,66,1);font-size: 1.8rem;display: block;}
+        .u-preFu{padding: .4rem .6rem;margin: .4rem .6rem; color: white;background-color:rgba(43,58,66,1);font-size: 1.8rem;overflow: scroll;}
+    </style>
+</head>
+<body>
+<a href="https://www.jianshu.com/p/8105d6c16d80">参考链接</a>
+<p>
+    <strong>卸载旧版本</strong><span class="u-emphasis">cnpm uninstall vue-cli -g</span>
+    <strong>安装3.0以上</strong><span class="u-emphasis">cnpm install @vue/cli -g</span>
+    <strong>检查版本</strong><span class="u-emphasis">vue -V</span>
+</p>
+<p><strong>命令行启动：</strong><span class="u-emphasis">vue create【将要创建的项目目录】</span></p>
+<section>
+    <h5>安装步骤：</h5>
+    <pre>
+        ?  Your connection to the default npm registry seems to be slow.
+        Use https://registry.npm.taobao.org for faster installation? (Y/n)
+        (检测到npm安装很慢，是否切换到淘宝镜像/cnpm?   y)
+    </pre>
+    <h6>第一步</h6>
+    <div class="u-preFu">
+        <pre>
+        Vue CLI v3.7.0
+      ? Please pick a preset:(安装模式？)
+        default (babel, eslint)(默认选项)
+      > Manually select features（自定义选项）
+        </pre>
+    </div>
+    <section>
+        <pre>
+          选择自定义安装的东西(空格选择/↑↓移动/回车下一步)
+        ? Check the features needed for your project:
+        >(*) Babel                           //转码器，可以将ES6代码转为ES5代码，从而在现有环境执行。
+         ( ) TypeScript// TypeScript是一个JavaScript（后缀.js）的超集（后缀.ts）包含并扩展了 JavaScript 的语法，需要被编译输出为 JavaScript在浏览器运行，目前较少人再用
+         ( ) Progressive Web App (PWA) Support// 渐进式Web应用程序
+         (*) Router                           // vue-router（vue路由）
+         (*) Vuex                             // vuex（vue的状态管理模式）
+         ( ) CSS Pre-processors               // CSS 预处理器（如：less、sass）
+         (*) Linter / Formatter               // 代码风格检查和格式化（如：ESlint）
+         ( ) Unit Testing                     // 单元测试（unit tests）
+         ( ) E2E Testing                      // e2e（end to end） 测试
+        </pre>
+    </section>
+    <h6>安装路由</h6>
+    <div class="u-preFu">
+        <pre>
+        ? Use history mode for router? (Requires proper server setup for index fallback in production)Y/N    n
+        路由是否使用历史模式，选个n
+        </pre>
+    </div>
+    <p class="u-hint">
+        Vue-Router 利用了浏览器自身的hash 模式和 history 模式的特性来实现前端路由（通过调用浏览器提供的接口）
+        hash： 浏览器url址栏 中的 # 符号（如这个 URL：http://www.abc.com/#/hello，hash 的值为“ #/hello”），hash 不被包括在 HTTP 请求中（对后端完全没有影响），因此改变 hash 不会重新加载页面
+        history：利用了 HTML5 History Interface 中新增的 pushState( ) 和 replaceState( ) 方法（需要特定浏览器支持）。单页客户端应用，history mode 需要后台配置支持（详细参见：https://router.vuejs.org/zh/guide/essentials/history-mode.html）
+    </p>
+    <br />
+    <pre>
+        作者：zhyzhyzz
+        链接：https://www.jianshu.com/p/8105d6c16d80
+        来源：简书
+        简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
+        </pre>
+    <h6>安装代码风格检测</h6>
+    <div class="u-preFu">
+        <pre>
+      ? Pick a linter / formatter config: (Use arrow keys)
+        ESLint with error prevention only（只与错误预防）
+        ESLint + Airbnb config（Airbnb配置）
+      > ESLint + Standard config（标准配置）
+        ESLint + Prettier （漂亮）
+        </pre>
+    </div>
+
+    <div class="u-preFu">
+        <pre>
+  保存时还是代码提交时进行代码检查（保存时更方便改）
+  ? Pick additional lint features: (Press <\space> to select, <\a> to toggle all, <\i> to invert selection)
+  >(*) Lint on save  //保存时
+   ( ) Lint and fix on commit  //代码提交时
+        </pre>
+    </div>
+
+    <h6>配置信息保存到哪儿</h6>
+    <div class="u-preFu">
+        <pre>
+ ? Where do you prefer placing config for Babel, PostCSS, ESLint, etc.?
+> In dedicated config files （专属文件）
+  In package.json（package.json文件）
+        </pre>
+    </div>
+
+    <h6></h6>
+    <div class="u-preFu">
+        <pre>
+        是否保存配置记录以便以后使用?
+        ? Save this as a preset for future projects? (y/N)
+        (初学建议选 N)
+        </pre>
+    </div>
+
+    <h6></h6>
+    <div class="u-preFu">
+        <pre></pre>
+    </div>
+    <a href="https://www.jianshu.com/p/8105d6c16d80">这篇文章写的很棒，暂时没必要继续写了 看这个就行</a>
+</section>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content="王午阳"> <!--关键词-->
+    <meta name="Description" content="王午阳">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div id="Fu" class = "Fu">
+
+
+</div>
+
+<script>
+    function HuoQu(ID_or_CLASS,name) {
+        if(ID_or_CLASS ==="#"){
+            return document.getElementById(name);
+        }
+        if(ID_or_CLASS ==="."){
+            return document.getElementsByClassName(name);
+        }
+    }
+
+    console.time('querySelectorAll');
+    for (var i = 0; i < 1000000; i++) {
+        document.querySelectorAll(".Fu");
+    }
+    console.timeEnd('querySelectorAll');
+    //querySelectorAll: 1781ms
+
+    console.time('getElementsByClassName');
+    for (var i = 0; i < 1000000; i++) {
+        document.getElementsByClassName("Fu");
+    }
+    console.timeEnd('getElementsByClassName');
+    //getElementsByClassName: 54ms
+
+    console.time('querySelector');
+    for (var i = 0; i < 1000000; i++) {
+        document.querySelector("#Fu");
+    }
+    console.timeEnd('querySelector');
+    //querySelector: 519ms
+
+    console.time('getElementById');
+    for (var i = 0; i < 1000000; i++) {
+        document.getElementById("Fu");
+    }
+    console.timeEnd('getElementById');
+    //getElementById: 491ms
+
+    //测试ID速度
+    console.time("#");
+    for (var i = 0; i < 1000000; i++) {
+        HuoQu("#","Fu");
+    }
+    console.timeEnd('#');
+
+    //测试Class速度
+    console.time(".");
+    for (var i = 0; i < 1000000; i++) {
+        HuoQu(".","Fu");
+    }
+    console.timeEnd('.');
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVN笔记</title>
+</head>
+<body>
+<h1>SVN安装教程</h1>
+<h5>1：官网下载SVN</h5>
+<p>安装后，检查环境变量是否正确（系统环境的path路径，一般会默认自动添加上），输入 svn --version 来检查版本信息</p>
+<h5>2：</h5>
+<article>
+    <p><strong>Checkout操作</strong>:<span>从版本库创建一个工作副本</span></p>
+    <p><strong>update 操作 </strong>:<span>更新版本库</span></p>
+    <p><strong>Rename 操作 </strong>:<span>可以更改文件/目录的名字</span></p>
+    <p><strong>Status 操作 </strong>:<span>列出了工作副本中所进行的变动。(并不提供变动的详细信息。)</span></p>
+    <p><strong>diff 操作   </strong>:<span>查看Status 操作中这些变动的详细信息。</span></p>
+    <p><strong>Revert 操作</strong>:<span>重置了对工作副本的修改。它可以重置一个或多个文件/目录。</span></p>
+    <p><strong>Merge 操作</strong>:<span>Merge 操作会自动处理可以安全合并的东西。其它的会被当做冲突。</span></p>
+    <p><strong>Commit 操作</strong>:<span>Commit 操作是用来将更改从工作副本到版本库。当提交的时候，我们通常会提供一个注释来说明为什么会进行这些改动。
+        这个注释也会成为版本库历史记录的一部分。Commit 是一个原子操作，也就是说要么完全提交成功，要么失败回滚。用户不会看到成功提交一半的情况。</span>
+    </p>
+</article>
+<h5>2:cmd新建版本库</h5>
+<p><strong>svnadmin create 目录名 (会自动生成一些svn相关文件)</strong></p>
+
+</body>
+</html>

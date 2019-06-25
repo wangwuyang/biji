@@ -1,0 +1,66 @@
+
+a {color:#a71d5d;}
+
+
+
+.Fu{background-color:rgb(200,200,200);}
+.Fu > section{padding:2rem 0;}
+.Fu > section > article{padding: 1.6rem 0;}
+.Fu .XuanZhong{background-color: red;color: white;}
+.SouSuo{text-align: center;margin: 0 auto;display: block;}
+
+.DaoHang_Fu{text-align: center}
+.DaoHang{overflow: hidden;display: inline-block;}
+.DaoHang li{padding: 1rem 2rem;float: left;background-color:#009f95; color:#a71d5d;font-weight: 700;border-left: solid 1px forestgreen;cursor: pointer;}
+.DaoHang li:first-child{border: none}
+.DaoHang li:hover{background-color: red;color: white;transition: .6s}
+/*兼容js的删除li的classname的代码*/
+.DaoHang li:nth-of-type(5),
+.DaoHang li:nth-of-type(6){cursor: not-allowed}
+.DaoHang li:nth-of-type(5):hover,
+.DaoHang li:nth-of-type(6):hover{background-color: rgba(159,159,159,1);color:indigo;}
+
+.NeiRong{overflow: hidden;width: 90%;margin: 0 auto;}
+.NeiRong h3,.NeiRong h4,.NeiRong h5{text-align: left;}
+.NeiRong > div{float: left;}
+.NR_FenLei{width:16%;height: 100%;padding: 10px 2%;}
+.NR_FenLei h4{text-align: center;font-size: 1.8rem;}
+.NR_FenLei_ul{padding: 10px 0;}
+.NR_FenLei_ul_li_ul{padding: 6px 0;}
+.NR_FenLei_ul_li_ul li{padding: 4px 0;text-align: center;}
+
+.NR_ZhengWen{width: 60%;height: 100%;}
+.aaaaa{width: 20%;height: 100%;}
+.NeiRong > div > h3{padding: 2rem 0;}
+.changyong h4{padding: 10px 1%;}
+.changyong a{display: block;padding: 4px 1%;}
+
+
+.NR_ZhengWen{background-color: white;}
+.NR_ZhengWen h3{text-align: center;}
+.NR_ZhengWen_NR1{padding: 10px 4%;}
+.NR_ZhengWen_NR1 strong{padding: 6px 0;display: inline-block}
+
+
+@media screen and (max-width :1024px){
+    .aaaaa{display: none;}
+    .NR_ZhengWen{width: 80%;}
+}
+
+
+/*响应式 rem*/
+@media screen and (max-width :1024px){ html{font-size:60%;} }
+@media screen and (max-width :900px){ html{font-size:58%;} }
+@media screen and (max-width :850px){ html{font-size:56%;} }
+@media screen and (max-width :800px){ html{font-size:54%;} }
+@media screen and (max-width :750px){ html{font-size:52%;} }
+@media screen and (max-width :700px){ html{font-size:50%;} }
+@media screen and (max-width :650px){ html{font-size:48%;} }
+@media screen and (max-width :600px){ html{font-size:46%;} }
+@media screen and (max-width :550px){ html{font-size:44%;} }
+@media screen and (max-width :500px){ html{font-size:42%;} }
+@media screen and (max-width :450px){ html{font-size:40%;} }
+
+@media screen and (max-width :520px){
+.NeiRong{width: 98%;}
+}

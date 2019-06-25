@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    //发送数据函数
+    function CheZhu_FaSong() {
+        //车主添加的条数、起点、终点、车型、车长；
+        var CheZhu_JSONA = {};
+        CheZhu_JSONA.CheZhu_QiDian = localStorage.CheZhu_TianJiaQiDian;
+        CheZhu_JSONA.CheZhu_ZhongDian = localStorage.CheZhu_TianJiaZhongDian;
+        CheZhu_JSONA.CheZhu_CheChang = localStorage.CheZhu_CheChang;
+        CheZhu_JSONA.CheZhu_CheXing = localStorage.CheZhu_CheXing;
+        console.log(CheZhu_JSONA);
+        Ajax_POST("http://wangwuyang.cn/shiyan1/index.php",CheZhu_JSONA,ChuLi1);
+        function ChuLi1(CanShu1) {
+            console.log("如果是字符串形式:"+CanShu1);
+            window.location.href = "index.html"
+        }
+    }
+    //ajax_POST函数 参数说明：url：后端文件路径； ture_or_false：异步还是同步;NeiRong:请求发送的内容
+    Ajax_POST("http://wangwuyang.cn/shiyan1/index.php",CheZhu_JSONA,ChuLi1);
+    function Ajax_POST(url,NeiRong,HuiDiaoHS) {
+        var BianLiang1 = null;
+        if(window.XMLHttpRequest){BianLiang1 = new XMLHttpRequest;}
+        else {BianLiang1 = new ActiveXObject("Microsoft.XMLHTTP");}
+        BianLiang1.onreadystatechange = function () {
+            if (BianLiang1.readyState === 4 && BianLiang1.status === 200) {
+                var type = BianLiang1.getResponseHeader("Content-Type");//获取响应类型
+                HuiDiaoHS(BianLiang1.responseText);
+            }
+        };//异步可以放前面 同步要放后面
+        BianLiang1.open("POST",url,true);
+        BianLiang1.setRequestHeader("Content-type","application/x-www-form-urlencoded","charset=utf-8");
+        BianLiang1.send(JSON.stringify(NeiRong));//将javascript值处理成字符串后发送
+    }
+
+</script>
+</body>
+</html>

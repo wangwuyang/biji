@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>node.js教程</title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--默认使用Google Chrome Frame进行渲染，如果没有安装gcf则使用IE的最新内核来渲染-->
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content="node.js教程"> <!--关键词-->
+    <meta name="Description" content="仿廖海峰官网的node.js教程">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+    <style>
+        *{padding: 0;margin: 0;}
+        html{font-size: 62.5%;background-color: white;font-family: 幼圆;}
+        body{cursor: default;font-size: 1.6rem;}
+        h1,h2,h3,h4,h5,h6{text-align: center;padding: 1rem 0;}
+        ul,li{list-style: none;}                           /*取消ul,li的默认样式：点*/
+        /*取消默认样式：下划线；取消a标签点击时的颜色*/
+        a{text-decoration: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;}
+
+        body .QCFloat{clear:both;}/*清除浮动*/
+        body .BuKeDianJi{cursor: not-allowed;color: #666;}
+
+        .Fu{min-width: 320px;margin: 1rem auto 10rem auto;}
+
+        article{padding: 0 2rem;}
+        p{padding:.8rem 0;text-indent: 2em;}
+        .BianKuang{border: solid 1px #33CCCC;padding: 1rem;}
+    </style>
+    <script>
+        //教程链接数据化
+        //JiaoCheng_href：廖海峰的官网nodejs教程链接
+        var JiaoCheng_href = "https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/00143450141843488beddae2a1044cab5acb5125baf0882000#0";
+        window.onload = function () {
+            document.getElementById("JiaoCheng").href = JiaoCheng_href;
+        }
+    </script>
+</head>
+<body>
+
+<div class="Fu">
+    <article class="Tou">
+        <p><a id="JiaoCheng" href="#" title="教程来自廖雪峰官网">参考教程来源（廖雪峰官网）</a></p>
+    </article>
+    <article class="ZhuTi">
+        <section class="ZhuTi_1">
+            <h2>安装Node.js和npm</h2>
+            <p>目前Node.js的最新版本是7.6.x。首先，从Node.js官网下载对应平台的安装程序，网速慢的童鞋请移步国内镜像。</p>
+            <p>在Windows上安装时务必选择全部组件，包括勾选Add to Path。</p>
+            <p>安装完成后，在Windows环境下，请打开命令提示符，然后输入node -v，如果安装正常，你应该看到v7.6.0这样的输出：</p>
+            <div class="BianKuang">
+                C:\Users\IEUser>node -v<br />
+                v7.6.0
+            </div>
+            <p>继续在命令提示符输入node，此刻你将进入Node.js的交互环境。在交互环境下，你可以输入任意JavaScript语句，例如100+200，回车后将得到输出结果。</p>
+            <p>要退出Node.js环境，连按两次Ctrl+C。</p>
+            <h2>npm</h2>
+            <p>在正式开始Node.js学习之前，我们先认识一下npm。</p>
+            <p>npm是什么东东？npm其实是Node.js的包管理工具（package manager）。</p>
+            <p>为啥我们需要一个包管理工具呢？因为我们在Node.js上开发时，会用到很多别人写的JavaScript代码。如果我们要使用别人写的某个包，每次都根据名称搜索一下官方网站，下载代码，解压，再使用，非常繁琐。于是一个集中管理的工具应运而生：大家都把自己开发的模块打包后放到npm官网上，如果要使用，直接通过npm安装就可以直接用，不用管代码存在哪，应该从哪下载。</p>
+            <p>更重要的是，如果我们要使用模块A，而模块A又依赖于模块B，模块B又依赖于模块X和模块Y，npm可以根据依赖关系，把所有依赖的包都下载下来并管理起来。否则，靠我们自己手动管理，肯定既麻烦又容易出错。</p>
+            <p>讲了这么多，npm究竟在哪？</p>
+            <p>其实npm已经在Node.js安装的时候顺带装好了。我们在命令提示符或者终端输入npm -v，应该看到类似的输出：</p>
+            <div class="BianKuang">
+                C:\>npm -v<br />
+                4.1.2
+            </div>
+            <p>如果直接输入npm，你会看到类似下面的输出：</p>
+            <div class="BianKuang">
+                C:\> npm<br />
+                Usage: npm< command ><br />
+                where < command > is one of:<br />
+                ...
+            </div>
+            <p>上面的一大堆文字告诉你，npm需要跟上命令。现在我们不用关心这些命令，后面会一一讲到。目前，你只需要确保npm正确安装了，能运行就行。</p>
+
+            <p><strong>小结</strong></p>
+            <p>请在本机安装Node.js环境，并确保node和npm能正常运行。</p>
+        </section>
+
+        <section class="ZhuTi_2">
+            <div>
+                <h2>启动服务器的代码(参考：菜鸟教程)</h2>
+                <pre>
+    var http = require("http");
+    http.createServer(function (request, response) {
+      response.writeHead(200,{"Content-Type":"text/plain"});
+      response.end("hello World\n");
+    }).listen(8888);
+    console.log('Server running at http://127.0.0.1:8888/');
+                </pre>
+                <p>保存为a.js，并通过命令行在对应位置敲入 node a.js 来开启服务器 然后在浏览器输入对应网址即可访问</p>
+                <p>第一行请求（require）Node.js 自带的 http 模块，并且把它赋值给 http 变量。</p>
+                <p>接下来我们调用 http 模块提供的函数： createServer 。这个函数会返回 一个对象，这个对象有一个叫做 listen 的方法，这个方法有一个数值参数， 指定这个 HTTP 服务器监听的端口号。</p>
+            </div>
+            <div>
+                <h2>文件操作+同步异步</h2>
+                <p>同步</p>
+                <pre>
+var fs = require("fs");
+var data = fs.readFileSync('index2.html');
+console.log(data.toString());
+console.log("程序执行结束!");
+                </pre>
+                <p>异步</p>
+                <pre>
+var fs = require("fs");
+fs.readFile('index2.html', function (err, data) {
+    if (err) return console.error(err);
+    console.log(data.toString());
+});
+console.log("程序执行结束!");
+                </pre>
+                <p>以上两个实例我们了解了阻塞与非阻塞调用的不同。第一个实例在文件读取完后才执行完程序。 第二个实例我们不需要等待文件读取完，这样就可以在读取文件时同时执行接下来的代码，大大提高了程序的性能。</p>
+                <p>因此，阻塞是按顺序执行的，而非阻塞是不需要按顺序的，所以如果需要处理回调函数的参数，我们就需要写在回调函数内。</p>
+            </div>
+        </section>
+    </article>
+</div>
+<script>
+
+</script>
+</body>
+</html>

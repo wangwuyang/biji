@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--默认使用Google Chrome Frame进行渲染，如果没有安装gcf则使用IE的最新内核来渲染-->
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content="王午阳"> <!--关键词-->
+    <meta name="Description" content="王午阳">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+    <!-- import Vue.js -->
+    <script src="//vuejs.org/js/vue.min.js"></script>
+    <!-- import stylesheet -->
+    <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+    <!-- import iView -->
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+    <style>
+        *{padding: 0;margin: 0;}
+        html{font-size: 62.5%;background-color: white;font-family: 幼圆;}
+        body{cursor: default;font-size: 1.6rem;}
+        h1,h2,h3,h4,h5,h6{text-align: center;padding: 1rem 0;}
+        ul,li{list-style: none;}                           /*取消ul,li的默认样式：点*/
+        /*取消默认样式：下划线；取消a标签点击时的颜色*/
+        a{text-decoration: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;}
+
+        body .QCFloat{clear:both;}/*清除浮动*/
+        body .BuKeDianJi{cursor: not-allowed;color: #666;}
+
+        .Fu{min-width: 320px;margin: 1rem auto 10rem auto;}
+
+        article{padding: 0 2rem;}
+        p{padding:.8rem 0;text-indent: 2em;}
+        .BianKuang{border: solid 1px #33CCCC;padding: 1rem;}
+    </style>
+</head>
+<body>
+<div class="Fu">
+    <p><a href="node.js教程.html" title="./node.js教程">node.js教程</a></p>
+    <p><a href="node.js笔记.html" title="./node.js笔记">node.js笔记</a></p>
+</div>
+
+<div id="app">
+    <i-button @click="show">Click me!</i-button>
+    <Modal v-model="visible" title="Welcome">Welcome to iView</Modal>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            visible: false
+        },
+        methods: {
+            show: function () {
+                this.visible = true;
+            }
+        }
+    })
+</script>
+
+<script>
+
+    console.log("aa");
+</script>
+
+
+</body>
+</html>

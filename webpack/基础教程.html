@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>webpack4基础搭建教程</title>
+    <!--响应式兼容IE9-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/><!--移动开发-->
+    <meta http-equiv = "X-UA-Compatible" content ="IE=edge,chrome=1" /><!--默认使用Google Chrome Frame进行渲染，如果没有安装gcf则使用IE的最新内核来渲染-->
+    <!--[if lt IE 9]>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="Keywords" content="王午阳,node.js笔记"> <!--关键词-->
+    <meta name="Description" content="王午阳,node.js笔记">  <!--内容描述-->
+    <meta name="author" content="王午阳"> <!--作者-->
+    <style>
+        *{padding: 0;margin: 0;}
+        html{font-size: 62.5%;background-color: white;font-family: 幼圆;}
+        body{cursor: default;font-size: 1.6rem;}
+        h1,h2,h3,h4,h5,h6{text-align: center;}
+        h1{font-size:2.2rem;padding: 1.6rem 0;}  h2{font-size:2rem;  padding: 1.4rem 0;}
+        h3{font-size:1.8rem;padding: 1.2rem 0;}  h4{font-size:1.6rem;padding: 1rem 0;}
+        h5{font-size:1.4rem;padding: .8rem 0;}  h6{font-size:1.2rem;padding: .6rem 0;}
+
+        ul,ul > li{list-style: none;}/*取消ul,li的默认样式：点*/
+        li{padding: 1rem 0;}
+        /*取消默认样式：下划线；取消a标签点击时的颜色*/
+        a{text-decoration: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;}
+        p{text-indent: 2em;padding: .6rem 0;}
+
+        body .QCFloat{clear:both;}/*清除浮动*/
+        body .BuKeDianJi{cursor: not-allowed;color: #666;}
+
+        .g-Fu{
+            min-width: 320px;margin:0 auto;
+            background-color: white;/*颜色渐变兼容写法*/
+            background: -webkit-linear-gradient(left,rgba(100,100,100,1),rgba(255,255,255,1)); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(right,rgba(100,100,100,1),rgba(255,255,255,1)); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(right,rgba(100,100,100,1),rgba(255,255,255,1)); /* Firefox 3.6 - 15 */
+            background: linear-gradient(45deg,rgba(100,100,100,1),rgba(255,255,255,1)); /* 标准的语法（必须放在最后）*/
+        }
+
+        .g-Tou{}
+        .g-ZhuTi{padding: 1rem;}
+        .g-ZhuTi_1{padding: 2rem;}
+
+        .BianKuang{border: solid 1px #33CCCC;padding: 1rem;}
+
+        .ZhuTi_1 header{margin: 4rem;}
+        .BuZhou{margin:4rem;}
+        .BuZhou p{padding: .6rem 0;}
+        .img_Fu{overflow: hidden;}
+        img{float:left;width: 100%;}
+
+
+        /*元件部分*/
+        /*元件——暗示(提示)元件*/
+        .u-hint{color:green;font-size: 1.2rem;padding: .4rem;}
+        .u-emphasis{padding: .4rem .6rem;margin: .4rem .6rem; color: white;background-color:rgba(43,58,66,1);font-size: 1.8rem;display: block;}
+        .u-preFu{padding: .4rem .6rem;margin: .4rem .6rem; color: white;background-color:rgba(43,58,66,1);font-size: 1.8rem;overflow: scroll;}
+
+        /*响应式 rem*/
+        @media screen and (min-width :1024px){ html{font-size:80%;} }
+        @media screen and (max-width :1024px){ html{font-size:80%;} }
+        @media screen and (max-width :900px){ html{font-size:78%;} }
+        @media screen and (max-width :850px){ html{font-size:76%;} }
+        @media screen and (max-width :800px){ html{font-size:74%;} }
+        @media screen and (max-width :750px){ html{font-size:72%;} }
+        @media screen and (max-width :700px){ html{font-size:70%;} }
+        @media screen and (max-width :650px){ html{font-size:68%;} }
+        @media screen and (max-width :600px){ html{font-size:66%;} }
+        @media screen and (max-width :550px){ html{font-size:64%;} }
+        @media screen and (max-width :500px){ html{font-size:63%;} }
+        @media screen and (max-width :450px){ html{font-size:62.5%;} }
+    </style>
+    <script src="../../public_file/vue.js"></script>
+</head>
+<body>
+
+<div class="g-Fu" id="Fu">
+    <header class="g-Tou">
+        <h1>windows10环境下webpack4的基础搭建教程</h1>
+    </header>
+    <main class="g-ZhuTi">
+        <article class="g-ZhuTi_1">
+            <header>
+                <h2>第一部分：基础搭建</h2>
+                <div></div>
+            </header>
+            <section>
+                <h3>{{LieBiao.A[0].Zhu.BiaoTi}}</h3>
+                <div>
+                    <p>{{LieBiao.A[0].Zhu.NR[0]}}</p>
+                    <h5>{{LieBiao.A[0].Cong[0].BiaoTi}}</h5>
+                    <p>{{LieBiao.A[0].Cong[0].NR}}</p>
+                    <h5>{{LieBiao.A[0].Cong[1].BiaoTi}}</h5>
+                    <p>{{LieBiao.A[0].Cong[1].NR}}</p>
+                </div>
+            </section>
+            <section>
+                    <h3>2、安装cnpm</h3>
+                    <div>
+                        <p>用cnpm指令代替npm指令，毕竟npm是国外的，下载比较不便</p>
+                        <p><strong>npm install -g cnpm --registry=https://registry.npm.taobao.org</strong></p>
+                        <h5>检测方式:</h5>
+                        <p>cnpm -v</p>
+                        <span class="u-hint">*如果出现"cnpm是无法识别的命令"的情况，那就看看npm与cnpm是否在同一级目录（如果不在同一级目录，就会出现此问题）</span>
+                    </div>
+                </section>
+            <section>
+                    <h3>3(可选)、配置npm的全局模块的存放路径以及cache的存放路径</h3>
+                    <div>
+                        <h5>3.1、改变全局node_modules位置：</h5>
+                        <p><strong>npm config set prefix C:\a_ruanjian\nodejs</strong></p>
+                        <p>设置后的路径：C:/a_ruanjian/nodejs/node_modules/模块名</p>
+                    </div>
+                    <div>
+                        <h5>3.2、改变cache文件的位置:</h5>
+                        <p><strong>npm config set cache C:\a_ruanjian\nodejs\node_cache</strong></p>
+                        <p>如此设置的效果C:/a_ruanjian/nodejs/node_cache/乱七八糟的文件们</p>
+                    </div>
+                </section>
+            <section>
+                    <h3>4 创建.json配置文件来初始化项目</h3>
+                    <div>
+                        <p><strong>cnpm init (或者 cnpm init -y)</strong></p>
+                        <p>不需要发布包的话，全程默认即可，后面根据需要再更改，默认完会生成一个.json文件，里面有很多配置</p>
+                    </div>
+                </section>
+            <section>
+                    <h3>5、安装webpack和webpack-cli(本地：)</h3>
+                    <div>
+                        <p><strong>cnpm install --save-dev webpack webpack-cli</strong></p>
+                        <p>当你在本地安装 webpack 后，你能够从 node_modules/.bin/webpack 访问它的 bin 版本。</p>
+                        <span class="u-hint">官方文档推荐本地安装，但是本地webpack有时候会出现无法识别的BUG，待解决</span>
+
+                    </div>
+                </section>
+            <section>
+
+                    <h3>6、创建入口文件</h3>
+                    <div>
+                        <p>webpack4.x默认以项目根目录下的'./src/***.js'作为入口，我们没有，所以需要自己在根目录下创建"src/index.js"</p>
+                    </div>
+                </section>
+            <section>
+                <h3>7、进行打包</h3>
+                <div>
+                    <h4>7.1、配置webpack.config.js</h4>
+                    <p>入口文件默认是'./src/index.js'，输出文件默认是'./dist/main.js'（我不喜欢被默认配好，为了更改，我需要在webpack.config.js里设置下）</p>
+                    <p>依照个人习惯，此时我的 webpack.config.js 有如下内容</p>
+                    <div class="u-preFu">
+<pre>
++  const path = require('path');//引入path;此为node的内置文件，不用单独下载，用来更好的设置路径相关模块
++  module.exports = {
++     //入口文件相关 一番设置后即为：根目录/rukou/index.js
++     entry:"./rukou/index.js",
++     //出口文件相关
++     output: {
++         filename: 'js.js'//出口的js文件名
++         path: path.resolve(__dirname, 'chukou')//__dirname是nodejs里的一个全局变量,他指向我们的根目录 //用path来更改出口路径 一番设置后即为：根目录/chukou/js.js
++     }
++  };
+</pre>
+                    </div>
+                </div>
+                <div>
+                    <h4>7.2、配置package.json</h4>
+                    <p>此时运行命令，便能将入口文件转换为出口文件了</p>
+                    <p>输入<strong>webpack --mode development</strong>便能生成（开发/未压缩模式）的js输出文件</p>
+                    <p>输入<strong>webpack --mode production</strong>便能生成(生产/压缩模式)的js输出文件</p>
+                    <p>但太麻烦，为了方便操作，我在package.json里增加了两条快捷语句,设置好后，便能由快捷指令代替原本的指令了:<br />
+                        <strong>cnpm run kaifa</strong>
+                        <br />
+                        <strong>cnpm run shengchan</strong>
+                    </p>
+                    <p>此时package.json需要至少有如下内容</p>
+                    <div class="u-preFu">
+<pre>
+  {
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
++     "kaifa": "webpack --mode development",
++     "shengchan": "webpack --mode production"
+    },
+    "devDependencies": {
+      "webpack": "^4.29.6",
+      "webpack-cli": "^3.3.0"
+    }
+  }
+</pre>
+                    </div>
+                        <span class="u-hint">
+                            可能遇到的问题：提示“webpack不是内部或者外部命令...”,原因跟之前webpack是本地安装有关系,
+                            设置完快捷语句可以解决此问题.
+                        </span>
+                    </div>
+            </section>
+            <footer>
+                <h3>目前为止的配置步骤：</h3>
+                <div>
+                    <ol>
+                        <li>在node.js的官网下载安装node.js和npm</li>
+                        <li>（可选）设置npm模块和cache的默认安装位置</li>
+                        <li>创建工程目录；</li>
+                        <li>初始化工程目录：npm init。</li>
+                        <li>创建入口和出口文件</li>
+                        <li>
+                            <p>本地安装(官方文档推荐本地)webpack和webpack-cli。</p>
+                            <p>webpack –mode development/production进行打包，可在package.json中配置快捷命令</p>
+                            <p>在webpack –mode development/production里面还可以串联设置其他参数，入了门再查文档就行。</p>
+                        </li>
+                    </ol>
+                </div>
+                <p>目前为止应该是不会出现什么配置问题的，读者可以试试看 有问题可以反馈给<a href="javascript:">页面链接待添加</a>，我尽量回答</p>
+            </footer>
+        </article>
+
+        <article class="g-ZhuTi_2">
+            <header>
+                <h2>第二部分：各种loader设置</h2>
+                <section>
+                    <h3>css、图片、html等文件的打包</h3>
+                    <p>loader 用于对模块的源代码进行转换。loader 可以使你在 import 或"加载"模块时预处理文件。</p>
+                    <p>
+                        loader是一个很于意思的功能，webpack其实运行在node下的一个编译站，她可以将各种个样的文件打包起来，
+                        包括图片呀，css呀，视频呀，但无论怎么打包最后导出的都是javascrit，
+                        但是我们最终被客户端拉出的页面需要css的渲染需要图片的路径，
+                        而loader她可以把各种各样的资源文件进行转变编译，最后用正确的格式加载到浏览器中，
+                        比如css被转换为style插入到页面，图片被转换为base64格式
+                    </p>
+                </section>
+            </header>
+
+            <section>
+                <h3>css loader的相关插入、抽离、合并、压缩配置;</h3>
+                <p><span>比较有用的参考链接：</span>
+                    <a href="https://www.jianshu.com/p/91e60af11cc9">参考链接1</a>
+                    <a href="https://www.oschina.net/p/cssnano">参考链接2</a>
+                    <a href="https://blog.csdn.net/weixin_36185028/article/details/82182352">参考链接3</a>
+                </p>
+                <div>
+                    <h4>css插入html</h4>
+                    <div>
+                        <p>为了从 JavaScript 模块中 import 一个 CSS 文件，你需要在 module对象的配置中安装并添加  css-loader和style-loader</p>
+                        <strong class="u-emphasis">cnpm install --save-dev css-loader style-loader</strong>
+                        <p>目前webpack.config.js代码：</p>
+                        <div class="u-preFu">
+    <pre>
+      const path = require('path');
+      module.exports = {
+        entry: './rukou/index.js',
+        output: {
+          filename: 'js.js',
+          path: path.resolve(__dirname, 'chukou')
+        },
+    +   module: {
+    +     rules: [
+    +       {
+    +         test: /\.css$/,
+    +         use: [
+    +           'style-loader',//把加载的css作为style标签内容插入到html中
+    +           'css-loader'//用于在js中加载css
+    +         ]
+    +       }
+    +     ]
+    +   }
+      };
+    </pre>
+                        </div>
+                        <p class="u-hint">webpack loader从右到左执行，所以css-loader放后面便是先执行</p>
+                    </div>
+                    <h4>css的合并抽离配置</h4>
+                    <div>
+                        <p>webpack 根据正则表达式，来确定应该查找哪些文件，并将其提供给指定的 loader。在这种情况下，以 .css 结尾的全部文件，都将被提供给 style-loader 和 css-loader。</p>
+                        <p>写好后，我们可以在入口目录里添加一个 css.css 文件，写入点小样式，并在与其同级的 index.js 文件导入此css文件：import "./style.css"</p>
+                        <p>运行打包命令，完美！ 含有 CSS 字符串的 < style> 标签，被插入到了 html 文件的 < head> 中。</p>
+                        <h5>css单独抽离 extract-text-webpack-plugin || <strong>mini-css-extract-plugin</strong></h5>
+                        <p>官网推荐的不支持webpack4，于是找到一个替代命令：mini-css-extract-plugin</p>
+                        <p>安装：<strong class="u-emphasis">cnpm install --save-dev mini-css-extract-plugin</strong></p>
+                        <p>配置文件中引入并进行设置</p>
+                        <div class="u-preFu">
+    <pre>
+      const path = require('path');
+    + const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+    //不能在非生产环境出现且不能与style-loader同时出现  //只有压缩环境下才会出现抽离出来的文件
+        略
+        略
+        略
+    +   plugins: [  //配置属性们
+    +     //css抽离相关
+    +     new MiniCssExtractPlugin({
+    +       // Options similar to the same options in webpackOptions.output // both options are optional
+            filename: "css.css",//输出的文件名称   //推荐的是[name].css，我还不明白其意思，所以暂时不用
+            chunkFilename: "[id].css" //不知道干嘛的，删掉也不影响正常运行，不过预防万一，先加着
+    +     })
+    +   ],
+        module: {
+          rules: [{
+              test: /\.css$/,
+              use: [
+    +           {
+    +             loader: MiniCssExtractPlugin.loader,
+    +             options: {
+    +               // you can specify a publicPath here  // by default it use publicPath in webpackOptions.output
+    +               publicPath: '../'
+    +             }
+    +           },
+    -         //'style-loader',//代码单独抽离的话，就不需要再插入到style里了，所以删除style-loader
+              'css-loader'
+              ]
+          }]
+        }
+        略
+        略
+        略
+    </pre>
+                        </div>
+                    </div>
+                    <h4>css的自动添加浏览器前缀配置</h4>
+                    <div>
+                        <p>为了避免自己手写很麻烦，所以引入前缀配置，来减轻工作量,用到了postcss-loader和它对应的插件autoprefixer</p>
+                        <p>安装：<strong class="u-emphasis">cnpm install postcss-loader autoprefixer --save-dev</strong></p>
+                        <p>为了配置各种属性，需要在根目录下新建个文件，文件名是固定的：postcss.config.js</p>
+                        <div class="u-preFu">
+                            <pre>
+    module.exports = {
+      plugins: [
+        require('autoprefixer')({
+          "browsers": [
+            "defaults",
+            "not ie < 11",
+            "last 2 versions",
+            ">0.01%",
+            "iOS 7",
+            "last 3 iOS versions"
+          ]
+        })
+      ]
+    };
+                            </pre>
+                        </div>
+                        <span class="u-hint">参数说明：>0.01% 此值基本上就是最广的兼容性了（官网没中文翻译，看着挺麻烦，参数的详细介绍我就不多说了）</span>
+                        <p>然后webpack.config.js的内容改变如下</p>
+                        <div class="u-preFu">
+                            <pre>
+      略
+      略
+      略
+      module: {
+        rules: [
+
+          {//css抽离属性
+            test: /\.css$/,
+            use: [
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  // you can specify a publicPath here// by default it use publicPath in webpackOptions.output
+                  publicPath: '../'
+                }
+              },
+              //'style-loader',//代码单独抽离的话，就不用再插入到style里了，所以删除style-loader
+              {loader:"css-loader"},        // 等同于"css-loader",
+    +         {loader:"postcss-loader"}    // 等同于"postcss-loader"
+            ]
+          }
+        ]
+      }
+      略
+      略
+      略
+                            </pre>
+                        </div>
+                        <p>然后运行 嗯 毫无问题 破儿费</p>
+                    </div>
+                    <p>
+                        <a href="https://blog.csdn.net/qq20004604/article/details/78785911">参考链接1</a>
+                        <a href="https://blog.csdn.net/keader01/article/details/73029482">参考链接2</a>
+                        <a href="https://blog.csdn.net/qq_34035425/article/details/81985639">参考链接3</a>
+                        <a href="https://blog.csdn.net/woosido123/article/details/84290447">参考链接4</a>
+                    </p>
+                    <h4>css的压缩</h4>
+                    <div>
+                        <p>css的压缩用到了两个包：optimize-css-assets-webpack-plugin和cssnano，有心人可以查查看后者的其他相关内容，感觉挺有用的</p>
+                        <p>安装：<strong class="u-emphasis">cnpm install optimize-css-assets-webpack-plugin cssnano --save-dev</strong></p>
+                        <p>此时webpack.config.js的内容:</p>
+                        <div class="u-preFu">
+<pre>
+
+  ......
++ const optimizeCss = require('optimize-css-assets-webpack-plugin');
+  ......
+  plugins: [
++   new optimizeCss()
+  ]
+  ......
+</pre>
+                    </div>
+                        <p>上面的是最简单版，只增加了2行代码，也可以实现压缩，不过啥配置都没有，没什么扩展性，不推荐,下面的是配置版的</p>
+                        <div class="u-preFu">
+<pre>
+
+......
++ const optimizeCss = require('optimize-css-assets-webpack-plugin');
+......
+plugins: [
++    new optimizeCss({
++            cssProcessor: require('cssnano'), //引入cssnano配置压缩选项
++            cssProcessorOptions: {
++            	discardComments: { removeAll: true }
++            },
++            canPrint: true //是否将插件信息打印到控制台
++         //options.safe:false  //疑似是是否优化的意思 等回头试试看
++        })
+]
+......
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <article>
+                <h3>css相关总结</h3>
+                <div>
+                    <p>目前的webpack.config.js内容：</p>
+                    <div class="u-preFu">
+    <pre>
+    const path = require('path');//node内置文件路径相关模块
+    const MiniCssExtractPlugin = require("mini-css-extract-plugin");//不能在非生产环境出现且不能与style-loader同时出现  //只有压缩环境下才会出现抽离出来的文件
+    const optimizeCss = require('optimize-css-assets-webpack-plugin');//css压缩相关 引入
+    //const devMode = process.env.NODE_ENV !== 'production';//判断是不是生产环境
+    module.exports = {
+
+      mode: "production",// enable many optimizations for production builds  //为开发环境产生许多优化.......
+
+      entry: './rukou/index.js',
+
+      output: {
+        filename: 'js.js',
+        path: path.resolve(__dirname, 'chukou')//__dirname是nodejs里的一个全局变量,他指向我们的根目录
+      },
+
+      //配置属性
+      plugins: [
+        //css抽离属性
+        new MiniCssExtractPlugin({
+          // Options similar to the same options in webpackOptions.output// both options are optional
+          filename: "css.css",//输出的文件名称   //推荐的是[name].css，我还不明白其意思，所以暂时不用
+          chunkFilename: "[id].css" //不知道干嘛的，删掉也不影响运行,不过预防万一，先加着
+        }),
+       // new optimizeCss()//css压缩相关(最简单的用法，如果不需要配置的话 可以不用安装 cssnano )
+        new optimizeCss({
+          cssProcessor: require('cssnano'), //引入cssnano配置压缩选项
+          cssProcessorOptions: {
+            discardComments: { removeAll: true }
+          },
+          canPrint: true //是否将插件信息打印到控制台
+          //options.safe:false  //疑似是否优化的意思 等回头试试再说
+        })
+      ],
+
+      module: {
+        rules: [
+
+          {//css抽离属性
+            test: /\.css$/,
+            use: [
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  // you can specify a publicPath here// by default it use publicPath in webpackOptions.output
+                  publicPath: '../'
+                }
+              },
+              //'style-loader',//代码单独抽离的话，就不用再插入到style里了，所以删除style-loader
+              {loader:"css-loader"},        // 等同于"css-loader",
+              {loader:"postcss-loader"}    // 等同于"postcss-loader"
+            ]
+          }
+        ]
+      }
+    };
+    </pre>
+                    </div>
+                    <p>目前的postcss.config.js内容：</p>
+                    <div class="u-preFu">
+    <pre>
+    module.exports = {
+      plugins: [
+        require('autoprefixer')({
+          "browsers": [
+            "defaults",
+            "not ie < 11",
+            "last 2 versions",
+            ">0.01%",
+            "iOS 7",
+            "last 3 iOS versions"
+          ]
+        })
+      ]
+    };
+    // module.exports = {
+    //   parser: 'sugarss',
+    //   plugins: {
+    //     'postcss-import': {},
+    //     'postcss-preset-env': {},
+    //     'cssnano': {}
+    //   }
+    // }
+    </pre>
+                    </div>
+                    <p>目前的package.json内容：</p>
+                    <div class="u-preFu">
+    <pre>
+    {
+      "name": "aaa",
+      "version": "1.0.0",
+      "description": "",
+      "private": true,
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "kaifa": "webpack --mode development",
+        "shengchan": "webpack --mode production"
+      },
+      "author": "",
+      "license": "ISC",
+      "devDependencies": {
+        "autoprefixer": "^9.5.1",
+        "css-loader": "^2.1.1",
+        "cssnano": "^4.1.10",
+        "mini-css-extract-plugin": "^0.5.0",
+        "optimize-css-assets-webpack-plugin": "^5.0.1",
+        "postcss-loader": "^3.0.0",
+        "style-loader": "^0.23.1",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.3.0"
+      }
+    }
+    </pre>
+                    </div>
+                    <p><strong>devDependencies对象</strong>:npm包名自动添加到此对象下需要的命令：(--save-dev)<br />开发时需要的依赖【比如css抽离、合并等模块】</p>
+                    <p><strong>dependencies对象</strong>:npm包名自动添加到此对象下需要的命令：(--save)<br />开发后依旧需要的依赖【比如各种UI/JS框架】</p>
+                    <p>目前的入口文件index.js内容：</p>
+                    <div class="u-preFu">
+    <pre>
+        import "./css.css";
+        import "./css2.css";
+        function component() {
+        var element = document.createElement('div');
+        element.innerHTML = "dsadasdasdas";
+        return element;
+        }
+        document.body.appendChild(component());
+    </pre>
+                    </div>
+                    <p>目前的目录结构</p>
+                    <div class="img_Fu"><img src="../wenjian/image/webpack目录截图1.png"  alt="截止目前的目录截图" title="截止目前的目录截图"/></div>
+                </div>
+            </article>
+
+            <section>
+                <h3>webpack服务器的配置</h3>
+                <div>
+                    <p>1、安装webpack-dev-server<strong class="u-emphasis">cnpm install webpack-dev-server --save-dev</strong></p>
+                    <p>2、webpack.config.js里为module.exports增加个新属性</p>
+                    <div class="u-preFu">
+<pre>
+  //配置webpack开发服务器
++ devServer:{
+    //设置基本目录结构
++   contentBase:path.resolve(__dirname,"./chukou"),
+    //服务器的IP地址，可以用本机IP也可以用localhost
++   host:"localhost",
+    //服务器压缩是否开启
++   compress:true,
+    //配置服务端口号
++   port:8081
++ },
+</pre>
+                    </div>
+                    <p>3、package.json里的"scripts"中添加快捷命令：<strong class="u-emphasis">"start": "webpack-dev-server --open"</strong></p>
+                    <p>注:<strong>"start": "webpack-dev-server"</strong>和<strong>"start": "node_modules/.bin/webpack-dev-server"</strong>(.bin....这些为所在路径)也可以用</p>
+                    <p class="u-hint">注2:--open为立即打开浏览器的意思</p>
+                </div>
+            </section>
+
+            <section>
+                <h3>编译图片</h3>
+                <div>
+                    <p>需要安装file-loader模块</p>
+                    <p><strong class="u-emphasis">cnpm install file-loader --save-dev</strong></p>
+                    <p>然后备张测试用的图片放到你设置的入口目录下 我以根目录——rukou——a.jpg为例</p>
+                    <p>在webpack.config.js的module对象的rules数组下添加以下对象</p>
+                    <div class="u-preFu">
+                        <pre>
++  {//图片转换属性
++    test: /\.(png|svg|jpg|gif)$/,
++    use: [
++      'file-loader'
++    ]
++  }
+                        </pre>
+                    </div>
+                    <p>index.js目前的内容</p>
+                    <div class="u-preFu">
+                        <pre>
+import "./css.css";
+import "./css2.css";
+import TuPian_src from "./a.jpg";
+function component() {
+  var element = document.createElement('div');//被各种挂载的div
+
+  var h1 = document.createElement('h1');
+  element.appendChild(h1);
+  var TuPian = document.createElement('img');
+  element.appendChild(TuPian);
+  //添加内容
+  h1.appendChild(document.createTextNode("dsadasdasdas"));
+  TuPian.src = TuPian_src;
+
+  return element;
+}
+document.body.appendChild(component());//全部加到body上
+                        </pre>
+                    </div>
+                    <p>好了，编译下会发现，图片被自动转化名称且被添加到了网页上</p>
+                </div>
+            </section>
+
+            <section>
+                <h3>编译html</h3>
+                <div>
+                    <p>安装npm模块<strong class="u-emphasis">cnpm install --save-dev html-webpack-plugin</strong></p>
+                    <p>
+                        webpack.config.js文件里添加代码：
+                        (
+                        <a href="http://www.cnblogs.com/wonyun/p/6030090.html">参考链接1</a>
+                        <a href="https://www.cnblogs.com/grimm/p/5770829.html">参考链接2</a>
+                        <a href="./wenjian/参考链接1.html">防止原网站文章失效的拷贝版（与参考链接1内容一样）</a>
+                        )
+                    </p>
+                    <div class="u-preFu">
+                        <pre>
++  const HtmlWebpackPlugin = require('html-webpack-plugin');//自动生成html相关插件
+//省略无关代码
+   plugins: [
++    new HtmlWebpackPlugin({
++        title: '实验',
++        filename:"./index.html",
++        inject:'body',//js注入body底部
++        xhtml:true,//link自闭合
++        showErrors:true,//是否输出错误到html页面
++        chunks:"./index",//注入哪些入口块，不填为所有,此处只用到了index.js，所以就不插入index2.js了
++    }),
+//省略无关代码
+   ]
+//省略无关代码
+                        </pre>
+                    </div>
+                    <p>不配置任何选项的html-webpack-plugin对象【new HtmlWebpackPlugin()】，会默认将webpack中的entry配置所有入口thunk和抽取的css样式都插入到文件指定的位置。
+                        插入到该插件提供的`template`或者`templateContent`配置项指定的内容基础上生成一个html文件，
+                        具体插入方式是将样式`link`插入到`head`元素中，`script`插入到`head`或者`body`中。
+                    </p>
+                </div>
+            </section>
+            <section>
+                <h3>babel转码js文件</h3>
+                <div>
+                    <p>安装模块:
+                        <strong class="u-emphasis">cnpm install babel-loader @babel/core @babel/preset-env</strong>
+                        <a href="https://www.babeljs.cn/setup.html#installation">参考链接</a>
+                    </p>
+                    <p>webpack.config.js添加代码</p>
+                    <div class="u-preFu">
+                        <pre>
+module: {
+  rules: [
+   + { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+  ]
+}
+                        </pre>
+                    </div>
+                    <p>新建.babelrc文件</p>
+                    <div class="u-preFu">
+                        <pre>
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": []
+}
+                        </pre>
+                    </div>
+                    <p>附加题：webstorm编辑器上创建转码环境 上面的官网参考链接里有</p>
+                </div>
+            </section>
+            <section>
+                <h3>总结</h3>
+                <div>
+                    用到的所有下载命令：
+                    <strong class="u-emphasis">
+                        cnpm install
+                        webpack webpack-cli webpack-dev-server
+                        css-loader style-loader mini-css-extract-plugin postcss-loader autoprefixer optimize-css-assets-webpack-plugin cssnano
+                        file-loader
+                        html-webpack-plugin
+                        babel-loader @babel/core @babel/preset-env
+                        --save-dev
+                    </strong>
+                    <p>
+                        解释：<br />
+                        第一行：安装；<br />
+                        第二行：webpack模块 她的cli模块 它的服务器模块<br />
+                        第三行:css loader相关模块<br />
+                        第四行：图片模块<br />
+                        第五行：html自动生成模块<br />
+                        第六行：babel转码相关模块<br />
+                        第七行：所有模块本地安装<br />
+                    </p>
+                    <p>安装完所有模块，且将对应文件也复制好后，就可以直接用了</p>
+                    <p>目前效果：cnpm run kaifa（或者shengchan）后，webpack会进行图片(转换名称)、css（抽取合并到一个css文件里，并进行压缩）、html（自动生成）、js（ES6转换为ES5、压缩）的打包</p>
+                    <p><a href="javascript:">下载地址（还没弄 回头这里弄个模板文件的下载链接 来个开封即用 拎包入住）</a></p>
+                </div>
+            </section>
+
+
+
+
+            <p>待整理的混乱文档们</p>
+            <div>
+                <h3>css提取、压缩，删除多余文件等，以及之前所有功能的代码示例(用十天才堪堪入门，浪费了太多踩坑的时间，希望这个文档能帮到其他人)</h3>
+                <h5>项目目录</h5>
+                <img src="img/2.png" />
+                <h5>./webpack.config.js文件</h5>
+                <pre>
+const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');//替代webpack提供的压缩——production 阶段进行压缩
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');//提取压缩css相关
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');////替代webpack提供的压缩——production 阶段进行压缩
+const HtmlWebpackPlugin = require('html-webpack-plugin');//自动生成html插件
+const CleanWebpackPlugin = require('clean-webpack-plugin');//清理多余文件插件
+module.exports = {
+    //入口文件
+    entry:{
+        index:"./src/index.js",
+        index2:"./src/index2.js",
+    },
+    //出口文件
+    output: {
+        path: path.resolve(__dirname, './wenjian'),
+        filename: '[name].js'
+    },
+    //覆盖webpack默认提供的
+    optimization: {
+        minimizer: [//两段内容放在plugins中会直接生成压缩版JS，这袋盖便是默认和应用的区别，放到这，就是选用压缩后，才调用此命令进行压缩
+            new UglifyJsPlugin(
+                //压缩条件
+                {test: /\.js($|\?)/i},
+                //压缩选项
+                {
+                    cache: true,
+                    parallel: true,
+                    sourcMap: true
+                }),
+            new OptimizeCSSAssetsPlugin({}),
+        ],
+        splitChunks: {
+            cacheGroups: {
+                styles: {
+                    test: /\.css$/,//压缩的文件
+                    name: 'styles',//最终的文件名
+                   // chunks: 'all',
+                    enforce: true,
+                },
+            },
+        },
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        }),
+        new HtmlWebpackPlugin({
+            title: '实验',
+            filename:"./index.html",
+            inject:'body',//js注入body底部
+            xhtml:true,//link自闭合
+            showErrors:true,//是否输出错误到html页面
+            chunks:["index"],//注入哪些入口块，不填为所有,此处只用到了index.js，所以就不插入index2.js了
+        }),
+       /* 如果有其他html页面，分别实例化，new HtmlWebpackPlugin({
+            filename: 'list.html',
+            template: 'src/html/list.html',
+            thunks: ['common', 'list']
+        }),*/
+        new CleanWebpackPlugin(['wenjian']),//清理多余文件插件配置
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            // 这里可以指定一个 publicPath
+                            // 默认使用 webpackOptions.output中的publicPath
+                            publicPath: '../'
+                        },
+                    },
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader'
+                ]
+            }
+        ]
+    }
+};
+                    </pre>
+                <h5>./package.json</h5>
+                <pre>
+{
+  "name": "wanga",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "kaifa": "webpack --mode development",
+    "yasuo": "webpack --mode production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^9.4.5",
+    "clean-webpack-plugin": "^1.0.0",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
+  }
+}
+                    </pre>
+                <h5>./src/index.js</h5>
+                <pre>
+import './css1.css';
+import './css2.css';
+import index2 from './index2.js'
+import TuPian_src from './img/a.jpg';
+let h1 = document.createElement('h1');
+h1.appendChild(document.createTextNode("ds41243214321"));
+document.body.appendChild(h1);
+
+let TuPian = document.createElement('img');
+document.body.appendChild(TuPian);
+TuPian.src = TuPian_src;
+
+let btn = document.createElement('button');
+btn.innerHTML = '点我！';
+btn.onclick = index2;
+document.body.appendChild(btn);
+                    </pre>
+                <h5>./src/index2.js</h5>
+                <pre>
+export default function a(){
+    console.log("aaa");
+ };
+                    </pre>
+                <h5>./src/css1.css</h5>
+                <pre>
+body{
+    min-width: 100px;
+    min-height: 200px;
+    background-color: seagreen;
+}
+                    </pre>
+                <h5>./src/css2.css</h5>
+                <pre>
+body{font-size: 3rem;}
+                    </pre>
+                <h5>./src/img/a.jpg（随意弄个jpg图片）</h5>
+                <h3>目前为止用到的安装指令</h3>
+                <div style="text-align: center">
+                    <p><strong>cnpm init (或者 cnpm init -y)</strong></p>
+                    <p><strong>cnpm install --save-dev webpack webpack-cli</strong></p>
+                    <p><strong>"kaifa": "webpack --mode development",<br />"shengchan": "webpack --mode production"</strong></p>
+                    <p><strong>cnpm install css-loader style-loader postcss-loader autoprefixer --save-dev</strong></p>
+                    <p><strong>cnpm install --save-dev file-loader</strong></p>
+                    <p>安装npm模块<strong>cnpm install --save-dev html-webpack-plugin</strong></p>
+                    <p><strong>cnpm i -D uglifyjs-webpack-plugin mini-css-extract-plugin optimize-css-assets-webpack-plugin</strong></p>
+                </div>
+            </div>
+        </article>
+
+        <div>
+            <h3>注意：</h3>
+            <ol>
+                <li>webpack4.x中webpack.config.js这样的配置文件不是必须的。</li>
+                <li>默认入口文件是./src/index.js，默认输出文件./dist/main.js。</li>
+                <li>
+                    在安装一个要打包到生产环境的安装包时，你应该使用 npm install --save，
+                    如果你在安装一个用于开发环境的安装包（例如，linter, 测试库等），你应该使用 npm install --save-dev。请在 npm 文档 中查找更多信息。
+                </li>
+                <li>package.json文件下不得出现任何注释，否则报错</li>
+                <li>不知是我电脑只有C盘的原因还是我没有找到正确方法，我卸载模块总是失败,而且卸载失败后重新安装看起来重装了，其实还是用问题（待解决、存疑）</li>
+                <li>官方文档的css单独分离模块extract-text-webpack-plugin 他草他娘的有问题 官网文档也是错的，如果是webpack4.X的话 推荐用mini-css-extract-plugin来代替</li>
+            </ol>
+        </div>
+        <h2>webpack相关知识</h2>
+        <section class="ZhuTi3">
+            <pre>
+                BiaoTi:"webpack相关",
+                NR:[
+                ["开发环境","\"dev\":webpack --mode development"],
+                ["生产环境","\"build\":webpack --mode production"],
+                ["npm install module_name -S","等同于 npm install module_name --save","写入dependenciesnpm install module_name"],
+                ["npm install module_name -D","等同于 npm install module_name --save-dev","写入devDependencies"],
+                ["npm install module_name -g","全局安装(命令行使用)"],
+                ["npm install module_name", "本地安装(将安装包放在 ./node_modules 下)"],
+                ["--save-dev","会把安装的包和版本号记录到 package.json 中的 devDependencies 对象中"],
+                ["--save","会记录到 dependencies 对象中"],
+                ["它们的区别，我们可以先简单的理解为打包工具和测试工具用到的包使用"],
+                ["--save-dev存到 devDependencies","比如 eslint、webpack。"],
+                ["浏览器中执行的 js 用到的包存到 dependencies","比如 jQuery 等。"],
+                [
+                "dependencies与devDependencies有什么区别呢？",
+                "devDependencies 里面的插件只用于开发环境，不用于生产环境dependencies 是需要发布到生产环境的"
+                ],
+                ["npm install","它会读取 package.json 中的 devDependencies 和 dependencies 字段，把记录的包的相应版本下载下来。"],
+                ["cnpm 安装后提示不是内部命令：","原因是因为cnpm没有和npm安装在同一目录下，卸掉cnpm模块并重新指定npm模块的安装位置或者..."],
+                ["错误N：","json里不能有注释，否则会报错，找了半天才发现是这的问题 气死偶咧！"]
+                ]
+                删除(本地为例：)    npm  uninstall  webpack  -save-dev
+                最好将目录下的node-modules一起删除，否则会有残留文件影响下一次的结果。
+            </pre>
+        </section>
+        <div>
+            <h3>(废弃 略过)8、配置转码工具（ES6/7/8转ES5）</h3>
+            <strong>cnpm install -D babel-preset-env</strong>
+            <span>安装babel转码工具，这里用的本地安装</span>
+            <span><a href="https://www.cnblogs.com/ye-hcj/p/7070084.html">参考</a></span>
+            <span>在babel配置文件中{"presets": ["env"]}</span>
+            <p>
+                babel-preset-env可以设置一些选项，这里就介绍几种，有兴趣自己去看英文文档<br />
+                targets 指定运行环境<br />
+                targets.node 指定node版本<br />
+                targets.browsers 指定浏览器版本<br />
+                modules 指定何种形式的模块，设置为false表示不转码模块<br />
+            </p>
+            <pre>
+                    具体配置书写方式如下
+{
+    "presets": [
+        ["env",
+            {
+                "targets": {
+                "chrome": 52,
+                "browsers": ["last 2 versions","safari 7"]
+                }
+            }
+        ]
+    ]
+}
+                </pre>
+            <p>cnpm install babel-core babel-loader babel-preset-env --save-dev</p>
+        </div>
+    </main>
+</div>
+<script src="./js.js"></script>
+<script>
+    //常量声明
+    var PAGE_DATA = {
+
+    };
+    //数据层 表现层 逻辑层
+    //数据层最好还使用小组件吧
+    var VueName = new Vue({
+      el:"#Fu",
+      data:{
+        Titles:{
+          id:"01",
+          title:"windows10环境下webpack4的基础搭建教程",
+          main:[
+            {
+              id:"0101",
+              title:"第一部分：基础搭建",
+              main:[
+                {
+                  title:"1、安装node.js和npm",
+                  main:[
+                    {
+                      title:"",
+                      NR:"官网上下载node.js安装包：http://nodejs.cn/，下载完后傻瓜式安装即可，(买一送一（褒义的），npm也会捆绑安装上)"
+                    },
+                    {
+                      title:"检查方式",
+                      NR:"win+R 调出运行窗口，输入cmd,打开cmd小黑窗，然后输入node -v以及npm -v来分别检查安装情况与版本信息"
+                    },
+                    {
+                      title:"错误反馈链接:",
+                      NR:"如果这一步就出错，那我太好奇为毛了 可以把问题填写到这个页面里提交发给我--（回头写个提交页面把链接放到这）"
+                    }
+                  ]
+                },
+                {
+                  title:"2、安装cnpm",
+                  main:[
+                    {
+                      title:"用cnpm指令代替npm指令，毕竟npm是国外的，下载比较不便",
+                      MingLing:"npm install -g cnpm --registry=https://registry.npm.taobao.org"
+                    },
+                    {
+                      title:"检测方式:",
+                      MingLing:"cnpm -v",
+                      TiShi:"*如果出现\"cnpm是无法识别的命令\"的情况，那就看看npm与cnpm是否在同一级目录（如果不在同一级目录，就会出现此问题）"
+                    }
+                  ]
+                },
+                {
+                  title:"3(可选)、配置npm的全局模块的存放路径以及cache的存放路径",
+                  main:[
+                    {
+                      title:"改变全局node_modules位置：",
+                      MingLing:"npm config set prefix C:\\a_ruanjian\\nodejs",
+                      NR:"设置后的路径：C:/a_ruanjian/nodejs/node_modules/模块名"
+                    },
+                    {
+                      title:"改变cache文件的位置:",
+                      MingLing:"npm config set cache C:\\a_ruanjian\\nodejs\\node_cache",
+                      NR:"如此设置的效果C:/a_ruanjian/nodejs/node_cache/乱七八糟的文件们"
+                    }
+                  ]
+                },
+                {NR:"4 创建.json配置文件来初始化项目"},
+                {NR:"5、安装webpack和webpack-cli(本地：)"},
+                {NR:"6、创建入口文件"},
+                {NR:"7、进行打包"},
+                {NR:"目前为止的配置步骤："}
+              ]
+            },
+            {
+              h2:"第二部分：各种loader设置",
+              h3:[
+                {NR:"css、图片、html等文件的打包"},
+                {NR:"css loader的相关插入、抽离、合并、压缩配置;"},
+                {NR:"css相关总结"},
+                {NR:"webpack服务器的配置"},
+                {NR:"编译图片"},
+                {NR:"编译html"},
+              ]
+            }
+          ]
+        }
+      },
+      methods:{
+
+      }
+    })
+
+
+</script>
+</body>
+</html>
